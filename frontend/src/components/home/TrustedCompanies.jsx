@@ -15,7 +15,7 @@ const TrustedCompanies = () => {
         <section className="py-12 bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 overflow-hidden transition-colors duration-200">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-8">
                 <h3 className="text-lg font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Trusted by global leading companies</h3>
-                   <h1>Heading changed</h1>
+                   <h1>He changed</h1>
             </div>
 
             <div className="relative w-full overflow-hidden">
