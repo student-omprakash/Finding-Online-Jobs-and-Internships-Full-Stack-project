@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment files
+.env
+.env.local
+.env.production.local
+.env.development.local
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Build output
+dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Uploaded files (backend)
+backend/uploads/*
+!backend/uploads/.gitkeep

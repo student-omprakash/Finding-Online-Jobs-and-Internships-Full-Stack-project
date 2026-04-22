@@ -10,8 +10,8 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Configure axios defaults to use the Proxy (relative path)
-  axios.defaults.baseURL = '/api';
+  // Configure axios defaults - use env var in production, fallback to dev proxy
+  axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL || '/api';
   axios.defaults.withCredentials = true; // Ensure cookies/headers are passed
   axios.defaults.timeout = 10000; // 10 seconds timeout
 

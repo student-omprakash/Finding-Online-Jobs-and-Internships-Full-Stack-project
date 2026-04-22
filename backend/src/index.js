@@ -18,10 +18,13 @@ app.use((req, res, next) => {
     next();
 });
 
-// Middleware
 // Enable CORS with specific options
+const allowedOrigins = process.env.FRONTEND_URL
+    ? [process.env.FRONTEND_URL]
+    : true; // Allow all in dev
+
 app.use(cors({
-    origin: true, // Reflect request origin
+    origin: allowedOrigins,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']

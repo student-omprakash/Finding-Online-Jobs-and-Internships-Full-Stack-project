@@ -229,7 +229,7 @@ const EditProfile = () => {
                             {formData.resume && (
                                 <div className="mt-4">
                                     <a
-                                        href={formData.resume.startsWith('http') ? formData.resume : `http://localhost:5005${formData.resume}`}
+                                        href={formData.resume.startsWith('http') ? formData.resume : `${import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || 'http://localhost:5005'}${formData.resume}`}
                                         target="_blank"
                                         rel="noreferrer"
                                         className="text-indigo-600 hover:text-indigo-800 text-sm font-medium flex items-center"

@@ -38,7 +38,7 @@ const StudentDashboard = () => {
         // Handle local uploads (backend static files)
         if (url.includes('uploads/')) {
             const cleanPath = url.startsWith('/') ? url.slice(1) : url;
-            return `http://localhost:5005/${cleanPath}`;
+            return `${import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || 'http://localhost:5005'}/${cleanPath}`;
         }
         if (url.startsWith('http://') || url.startsWith('https://')) return url;
         return `https://${url}`;

@@ -148,7 +148,7 @@ const FeaturedJobs = () => {
   useEffect(() => {
     const fetchFeatured = async () => {
       try {
-        const res = await axios.get('/api/jobs');
+        const res = await axios.get('/jobs');
         setJobs(res.data.slice(0, 3));
       } catch (error) {
         console.error('Featured Jobs Error:', error.message);
