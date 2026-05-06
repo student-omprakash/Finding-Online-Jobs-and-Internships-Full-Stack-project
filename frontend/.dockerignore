@@ -1,0 +1,21 @@
+# Dependencies — reinstalled fresh inside the container
+node_modules/
+
+# Previous build output — will be rebuilt inside the container
+dist/
+
+# Environment files — injected at build time as build args
+.env
+.env.*
+!.env.example
+
+# Git files
+.git/
+.gitignore
+
+# macOS junk
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*

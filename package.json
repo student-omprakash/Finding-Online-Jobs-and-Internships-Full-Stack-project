@@ -1,5 +1,18 @@
 {
-  "dependencies": {
-    "axios": "^1.13.2"
+  "name": "careernest",
+  "version": "1.0.0",
+  "description": "CareerNest — Full-stack job finding platform for students",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently --names \"backend,frontend\" --prefix-colors \"blue,green\" \"cd backend && npm run dev\" \"cd frontend && npm run dev\"",
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "docker:up": "docker-compose up --build",
+    "docker:up:detached": "docker-compose up --build -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "docker:clean": "docker-compose down -v --remove-orphans"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
   }
 }
