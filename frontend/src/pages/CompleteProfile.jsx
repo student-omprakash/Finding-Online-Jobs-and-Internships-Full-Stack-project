@@ -24,7 +24,7 @@ const CompleteProfile = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const location = useLocation();
-    const { mobile, workStatus } = location.state || {};
+    const { mobile } = location.state || {}; // workStatus passed from Register but handled server-side
 
     const [formData, setFormData] = useState({
         bio: '',

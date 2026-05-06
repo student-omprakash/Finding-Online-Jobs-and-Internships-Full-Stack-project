@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useSearchParams } from 'react-router-dom';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
-import { FiSearch, FiMapPin, FiBriefcase, FiDollarSign, FiClock, FiStar, FiFilter, FiShoppingBag, FiFileText, FiTarget } from 'react-icons/fi';
+import { FiSearch, FiMapPin, FiBriefcase, FiDollarSign, FiClock, FiFilter, FiFileText, FiTarget } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-toastify';
@@ -22,7 +22,7 @@ const Jobs = () => {
 
   // Filter States
   const [selectedTypes, setSelectedTypes] = useState([]);
-  const [salaryRange, setSalaryRange] = useState('');
+  // salaryRange filter — reserved for future use
 
   // Fetch Profile for Sidebar
   const [profile, setProfile] = useState(null);

@@ -16,9 +16,10 @@ const Autocomplete = ({
     const [showDropdown, setShowDropdown] = useState(false);
     const wrapperRef = useRef(null);
 
-    // Update internal state if external value changes (e.g., initial load or reset)
+    // Sync internal input when external controlled value changes (e.g. form reset or initial data load)
     useEffect(() => {
-        setInputValue(value || '');
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        setInputValue(value || ''); // Intentional: sync controlled value — not a cascading render
     }, [value]);
 
     // Handle outside click to close dropdown

@@ -7,7 +7,7 @@ import { useAuth } from '../context/AuthContext';
 import Button from '../components/ui/Button';
 
 const EditProfile = () => {
-    const { user } = useAuth();
+    // user from useAuth available via context if needed later
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('basic');
@@ -50,7 +50,7 @@ const EditProfile = () => {
                         certifications: data.certifications || []
                     });
                 }
-            } catch (error) {
+            } catch (_error) {
                 // Ignore 404 (no profile yet)
             } finally {
                 setLoading(false);

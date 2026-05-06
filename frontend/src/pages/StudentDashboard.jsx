@@ -10,7 +10,7 @@ const StudentDashboard = () => {
     const { user } = useAuth();
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    // error state removed — 404 handled via navigate('/complete-profile')
     console.log('StudentDashboard Render. Loading:', loading, 'Profile:', profile);
 
     const navigate = useNavigate();

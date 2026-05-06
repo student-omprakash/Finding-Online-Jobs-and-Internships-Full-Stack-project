@@ -120,7 +120,7 @@ const RecruiterDashboard = () => {
             await axios.delete(`/jobs/${id}`);
             toast.success('Job deleted successfully');
             fetchMyJobs();
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to delete job');
         }
     };
@@ -141,11 +141,11 @@ const RecruiterDashboard = () => {
 
     const handleStatusUpdate = async (appId, newStatus) => {
         try {
-            const res = await axios.put(`/applications/${appId}`, { status: newStatus });
+            await axios.put(`/applications/${appId}`, { status: newStatus });
             // Update local state
             setApplicants(prev => prev.map(app => app._id === appId ? { ...app, status: newStatus } : app));
             toast.success(`Applicant ${newStatus}`);
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to update status');
         }
     };

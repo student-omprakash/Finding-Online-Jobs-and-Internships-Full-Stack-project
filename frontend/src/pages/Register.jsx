@@ -6,7 +6,7 @@ import Card from '../components/ui/Card';
 import { FiUser, FiMail, FiLock, FiBriefcase, FiPhone, FiUpload, FiCheck, FiCheckCircle } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 import axios from 'axios';
-import { toast } from 'react-toastify';
+// toast is handled inside AuthContext.register
 
 const Register = () => {
   const navigate = useNavigate();

@@ -11,7 +11,7 @@ const ResetPassword = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
-    const { login } = useAuth(); // Correct usage
+    useAuth(); // Auth context initialized — login redirect handled via navigate('/login')
 
     const { email, otp } = location.state || {};
 
