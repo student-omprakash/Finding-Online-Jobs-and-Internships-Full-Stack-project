@@ -1,10 +1,12 @@
 # ─── GitHub Actions CD Pipeline ───────────────────────────────────────────────
-# Triggers ONLY when CI passes on the main branch.
-# Automatically deploys backend and frontend to Render via deploy hooks.
+# Monitors deployment health after Render auto-deploys on every push to main.
 #
-# Required GitHub Secrets (Settings → Secrets → Actions):
-#   RENDER_BACKEND_DEPLOY_HOOK  — from Render backend service → Settings → Deploy Hook
-#   RENDER_FRONTEND_DEPLOY_HOOK — from Render frontend service → Settings → Deploy Hook
+# Render is configured with "Auto-Deploy: On Commit" for both services,
+# so it automatically deploys whenever this pipeline pushes to main.
+# This workflow monitors that the services become healthy after deploy.
+#
+# Required GitHub Secret (Settings → Secrets → Actions):
+#   RENDER_BACKEND_URL — the backend service URL on Render
 # ──────────────────────────────────────────────────────────────────────────────
 
 name: CD — Deploy to Render
@@ -20,31 +22,20 @@ concurrency:
 
 jobs:
 
-  # ── Job 1: Deploy Backend to Render ─────────────────────────────────────
-  deploy-backend:
-    name: 🚀 Deploy Backend to Render
+  # ── Verify Render Auto-Deploy is healthy ─────────────────────────────────────
+  verify-deployment:
+    name: 🚀 Verify Render Deployment
     runs-on: ubuntu-latest
 
     steps:
-      - name: Trigger Render Backend Deploy
+      - name: Wait for Render auto-deploy to start
         run: |
-          echo "🚀 Triggering backend deployment on Render..."
-          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
-            --max-time 30 \
-            "${{ secrets.RENDER_BACKEND_DEPLOY_HOOK }}")
+          echo "⏳ Render auto-deploy triggered by this push to main..."
+          echo "   Waiting 90 seconds for Render to pull latest code and deploy..."
+          sleep 90
 
-          if [ "$RESPONSE" = "200" ] || [ "$RESPONSE" = "201" ]; then
-            echo "✅ Backend deployment triggered successfully (HTTP $RESPONSE)"
-          else
-            echo "❌ Backend deployment trigger failed (HTTP $RESPONSE)"
-            exit 1
-          fi
-
-      - name: Wait for backend to become healthy
+      - name: Health check — Backend
         run: |
-          echo "⏳ Waiting 60 seconds for backend to deploy..."
-          sleep 60
-
           BACKEND_URL="${{ secrets.RENDER_BACKEND_URL }}"
           if [ -z "$BACKEND_URL" ]; then
             echo "ℹ️  RENDER_BACKEND_URL secret not set — skipping health check"
@@ -53,7 +44,7 @@ jobs:
 
           echo "🔍 Checking backend health at $BACKEND_URL/health"
           for i in 1 2 3 4 5; do
-            STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 "$BACKEND_URL/health")
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 20 "$BACKEND_URL/health" || echo "000")
             if [ "$STATUS" = "200" ]; then
               echo "✅ Backend is healthy! (attempt $i)"
               exit 0
@@ -62,38 +53,19 @@ jobs:
             sleep 30
           done
 
-          echo "⚠️  Backend health check timed out — deployment may still be in progress"
+          echo "⚠️  Backend health check timed out — deployment may still be in progress on Render free tier (cold start)"
           exit 0  # Don't fail CD for slow cold starts on Render free tier
-
-  # ── Job 2: Deploy Frontend to Render ─────────────────────────────────────
-  deploy-frontend:
-    name: 🌐 Deploy Frontend to Render
-    runs-on: ubuntu-latest
-    needs: deploy-backend  # Deploy frontend after backend is triggered
-
-    steps:
-      - name: Trigger Render Frontend Deploy
-        run: |
-          echo "🌐 Triggering frontend deployment on Render..."
-          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
-            --max-time 30 \
-            "${{ secrets.RENDER_FRONTEND_DEPLOY_HOOK }}")
-
-          if [ "$RESPONSE" = "200" ] || [ "$RESPONSE" = "201" ]; then
-            echo "✅ Frontend deployment triggered successfully (HTTP $RESPONSE)"
-          else
-            echo "❌ Frontend deployment trigger failed (HTTP $RESPONSE)"
-            exit 1
-          fi
 
       - name: Deployment Summary
         run: |
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          echo "🎉 CareerNest Deployment Triggered!"
+          echo "🎉 CareerNest Deployment Pipeline Complete!"
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          echo "  Backend  → Render (deployment triggered)"
-          echo "  Frontend → Render (deployment triggered)"
           echo ""
-          echo "  Check Render dashboard for live status:"
-          echo "  https://dashboard.render.com"
+          echo "  Backend  → https://careernest-backend-r5rj.onrender.com"
+          echo "  Frontend → https://careernest-frontendfinding-online-jobs.onrender.com"
+          echo ""
+          echo "  ℹ️  Render deploys automatically on every push to main."
+          echo "  ℹ️  Check Render dashboard for live deployment status:"
+          echo "      https://dashboard.render.com"
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
