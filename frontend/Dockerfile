@@ -19,9 +19,10 @@ RUN npm install
 # Copy the rest of the source
 COPY . .
 
-# Accept VITE_API_URL as a build argument (injected at docker build time)
-ARG VITE_API_URL=http://localhost:5005
-ENV VITE_API_URL=$VITE_API_URL
+# Accept VITE_API_BASE_URL as a build argument (injected at docker build time)
+# Default is the production Render backend URL so the build works even without Render env vars
+ARG VITE_API_BASE_URL=https://careernest-backend-r5rj.onrender.com/api
+ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
 
 # Build the production bundle
 RUN npm run build

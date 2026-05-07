@@ -19,19 +19,34 @@ app.use((req, res, next) => {
 });
 
 // Enable CORS with specific options
-const allowedOrigins = process.env.FRONTEND_URL
-    ? [process.env.FRONTEND_URL]
-    : true; // Allow all in dev
+// Always allow the known Render frontend + localhost for dev.
+// If FRONTEND_URL env var is also set on Render, that is included too.
+const allowedOrigins = [
+    'https://careernest-frontendfinding-online-jobs.onrender.com',
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'http://127.0.0.1:5173',
+    ...(process.env.FRONTEND_URL ? [process.env.FRONTEND_URL] : [])
+];
 
 app.use(cors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+        // Allow requests with no origin (server-to-server, curl, Postman, etc.)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            console.warn(`CORS blocked request from origin: ${origin}`);
+            callback(new Error(`CORS: origin ${origin} not allowed`));
+        }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// Handle preflight requests
-// app.options('*', cors()); 
+// Handle preflight for all routes
+app.options('*', cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
