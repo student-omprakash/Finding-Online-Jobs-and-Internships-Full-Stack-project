@@ -24,7 +24,7 @@ EXPOSE 5005
 
 # Health check — Docker will monitor this endpoint
 HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
-  CMD wget -qO- http://localhost:5005/health || exit 1
+  CMD wget -qO- http://127.0.0.1:5005/health || exit 1
 
 # Start the server
 CMD ["node", "src/index.js"]

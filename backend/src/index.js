@@ -12,6 +12,51 @@ dotenv.config();
 // Initialize Express app
 const app = express();
 
+// ── Prometheus Metrics Setup ──────────────────────────────────────────
+const client = require('prom-client');
+const register = new client.Registry();
+
+// Enable default metrics (CPU, Memory, etc.)
+client.collectDefaultMetrics({ register });
+
+// Custom metric: HTTP request duration histogram
+const httpRequestDurationSeconds = new client.Histogram({
+    name: 'http_request_duration_seconds',
+    help: 'Duration of HTTP requests in seconds',
+    labelNames: ['method', 'route', 'status_code'],
+    buckets: [0.1, 0.3, 0.5, 0.9, 1.5, 3, 5]
+});
+register.registerMetric(httpRequestDurationSeconds);
+
+// Middleware to monitor request performance
+app.use((req, res, next) => {
+    if (req.path === '/metrics') {
+        return next();
+    }
+    const end = httpRequestDurationSeconds.startTimer();
+    res.on('finish', () => {
+        // If route matches a router path, use that to avoid high cardinality, e.g. /api/jobs/:id
+        const route = req.route ? req.route.path : req.path;
+        end({
+            method: req.method,
+            route: route || req.path,
+            status_code: res.statusCode
+        });
+    });
+    next();
+});
+
+// Metrics expose endpoint for Prometheus
+app.get('/metrics', async (req, res) => {
+    try {
+        res.setHeader('Content-Type', register.contentType);
+        res.send(await register.metrics());
+    } catch (ex) {
+        res.status(500).end(ex);
+    }
+});
+// ──────────────────────────────────────────────────────────────────────
+
 // Debug logging for requests (Moved to top)
 app.use((req, res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} - Origin: ${req.headers.origin}`);
@@ -46,7 +91,7 @@ app.use(cors({
 }));
 
 // Handle preflight for all routes
-app.options('*', cors());
+app.options('/{*path}', cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

@@ -72,10 +72,43 @@ services:
     networks:
       - careernest-network
 
+  # ── Prometheus (Monitoring Scraping Engine) ───────────────────────────────
+  prometheus:
+    image: prom/prometheus:v2.51.0
+    container_name: careernest-prometheus
+    restart: unless-stopped
+    ports:
+      - '9090:9090'
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    networks:
+      - careernest-network
+
+  # ── Grafana (Aesthetics & Analytics UI) ──────────────────────────────────
+  grafana:
+    image: grafana/grafana:10.4.1
+    container_name: careernest-grafana
+    restart: unless-stopped
+    ports:
+      - '4000:3000' # Map to port 4000 of host to avoid standard port conflicts
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./grafana/provisioning/dashboards/careernest_dashboard.json:/var/lib/grafana/dashboards/careernest_dashboard.json:ro
+    depends_on:
+      - prometheus
+    networks:
+      - careernest-network
+
 # ── Named Volumes ───────────────────────────────────────────────────────────
 volumes:
   mongodb_data:     # MongoDB data persists across restarts
   backend_uploads:  # Uploaded files persist across restarts
+  grafana_data:     # Grafana user settings and data persists
 
 # ── Internal Network ────────────────────────────────────────────────────────
 networks:
