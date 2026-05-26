@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CareerNest – Project Synopsis</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Inter',sans-serif;background:#fff;color:#1a1a2e;font-size:13px;line-height:1.6;}
+  @media print{body{font-size:12px;} .no-print{display:none;} }
+
+  /* ── Print Button ── */
+  .print-bar{background:#1a1a2e;padding:12px 40px;display:flex;align-items:center;justify-content:space-between;}
+  .print-bar span{color:#fff;font-size:14px;font-weight:600;}
+  .print-btn{background:linear-gradient(135deg,#6c63ff,#3ecf8e);border:none;color:#fff;padding:9px 24px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;letter-spacing:.5px;}
+  .print-btn:hover{opacity:.9;}
+
+  /* ── Page ── */
+  .page{max-width:860px;margin:0 auto;padding:40px 50px;}
+
+  /* ── Cover ── */
+  .cover{text-align:center;padding:60px 0 40px;}
+  .cover .logo{font-size:44px;font-weight:900;background:linear-gradient(135deg,#6c63ff,#3ecf8e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-1px;}
+  .cover .tagline{margin:8px 0 20px;color:#555;font-size:15px;}
+  .cover .meta{display:inline-flex;gap:24px;background:#f4f3ff;border-radius:12px;padding:14px 32px;}
+  .cover .meta div{text-align:center;}
+  .cover .meta .label{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.6px;}
+  .cover .meta .val{font-size:13px;font-weight:700;color:#1a1a2e;}
+  .divider{height:3px;background:linear-gradient(135deg,#6c63ff,#3ecf8e);border-radius:4px;margin:28px 0;}
+
+  /* ── Sections ── */
+  h2{font-size:17px;font-weight:700;color:#1a1a2e;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+  h2 .icon{width:26px;height:26px;background:linear-gradient(135deg,#6c63ff,#3ecf8e);border-radius:6px;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:12px;flex-shrink:0;}
+  p{color:#444;margin-bottom:10px;}
+  .section{margin-bottom:28px;}
+
+  /* ── Grid cards ── */
+  .grid{display:grid;gap:14px;}
+  .grid-2{grid-template-columns:1fr 1fr;}
+  .grid-3{grid-template-columns:1fr 1fr 1fr;}
+  .card{background:#f9f9ff;border:1px solid #e8e4ff;border-radius:10px;padding:14px 16px;}
+  .card h3{font-size:13px;font-weight:700;color:#6c63ff;margin-bottom:6px;}
+  .card p, .card li{font-size:12px;color:#555;}
+  .card ul{padding-left:16px;}
+  .card li{margin-bottom:3px;}
+
+  /* ── Tech stack pills ── */
+  .pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+  .pill{background:#1a1a2e;color:#fff;border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;}
+  .pill.green{background:linear-gradient(135deg,#3ecf8e,#26a97a);}
+  .pill.purple{background:linear-gradient(135deg,#6c63ff,#4a42cc);}
+  .pill.gray{background:#555;}
+
+  /* ── Table ── */
+  table{width:100%;border-collapse:collapse;font-size:12px;}
+  th{background:#1a1a2e;color:#fff;padding:8px 12px;text-align:left;font-weight:600;}
+  td{padding:7px 12px;border-bottom:1px solid #eee;color:#444;}
+  tr:nth-child(even) td{background:#f9f9ff;}
+
+  /* ── Architecture box ── */
+  .arch{background:#1a1a2e;border-radius:12px;padding:20px;color:#fff;font-family:monospace;font-size:12px;line-height:2;}
+  .arch .hl{color:#3ecf8e;font-weight:700;}
+  .arch .arrow{color:#6c63ff;}
+
+  /* ── Footer ── */
+  .footer{text-align:center;margin-top:40px;padding-top:16px;border-top:1px solid #eee;font-size:11px;color:#aaa;}
+</style>
+</head>
+<body>
+
+<div class="no-print print-bar">
+  <span>📄 CareerNest — Project Synopsis</span>
+  <button class="print-btn" onclick="window.print()">🖨 Save as PDF</button>
+</div>
+
+<div class="page">
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="logo">CareerNest</div>
+    <div class="tagline">Full-Stack Job & Internship Discovery Platform for Students</div>
+    <div class="meta">
+      <div><div class="label">Type</div><div class="val">Full-Stack Web App</div></div>
+      <div><div class="label">Stack</div><div class="val">MERN</div></div>
+      <div><div class="label">Deployment</div><div class="val">Render + Docker</div></div>
+      <div><div class="label">Version</div><div class="val">1.0.0</div></div>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- ABSTRACT -->
+  <div class="section">
+    <h2><span class="icon">📋</span> Abstract</h2>
+    <p>CareerNest is a full-stack web platform designed to bridge the gap between students seeking employment opportunities and recruiters looking for fresh talent. The application provides a centralised ecosystem where students can discover jobs and internships, build and manage their professional profile, and track their applications — all in one place.</p>
+    <p>Recruiters benefit from a dedicated dashboard to post openings, manage listings, and review applicants. The system is backed by a secure REST API built on Node.js/Express with MongoDB as the database, and a React-based SPA for the frontend. The project follows modern DevOps practices including Docker containerisation, GitHub Actions CI/CD, and cloud deployment on Render.</p>
+  </div>
+
+  <!-- OBJECTIVES -->
+  <div class="section">
+    <h2><span class="icon">🎯</span> Objectives</h2>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>For Students</h3>
+        <ul>
+          <li>Discover relevant jobs and internships</li>
+          <li>Build a detailed professional profile</li>
+          <li>Apply with a single click</li>
+          <li>Track application status in real time</li>
+          <li>Manage resume, skills, education & experience</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>For Recruiters</h3>
+        <ul>
+          <li>Post and manage job/internship listings</li>
+          <li>View and filter applicants</li>
+          <li>Update application statuses</li>
+          <li>Maintain a branded company presence</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- TECH STACK -->
+  <div class="section">
+    <h2><span class="icon">🛠</span> Technology Stack</h2>
+    <div class="grid grid-3">
+      <div class="card">
+        <h3>Frontend</h3>
+        <div class="pills">
+          <span class="pill purple">React 19</span>
+          <span class="pill purple">Vite</span>
+          <span class="pill purple">Tailwind CSS</span>
+          <span class="pill purple">Framer Motion</span>
+          <span class="pill purple">React Router v7</span>
+          <span class="pill purple">Axios</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Backend</h3>
+        <div class="pills">
+          <span class="pill green">Node.js</span>
+          <span class="pill green">Express 5</span>
+          <span class="pill green">MongoDB</span>
+          <span class="pill green">Mongoose</span>
+          <span class="pill green">JWT Auth</span>
+          <span class="pill green">Nodemailer</span>
+          <span class="pill green">Multer</span>
+          <span class="pill green">Bcrypt.js</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3>DevOps & Tools</h3>
+        <div class="pills">
+          <span class="pill gray">Docker</span>
+          <span class="pill gray">Docker Compose</span>
+          <span class="pill gray">GitHub Actions</span>
+          <span class="pill gray">Render</span>
+          <span class="pill gray">MongoDB Atlas</span>
+          <span class="pill gray">Nginx</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SYSTEM ARCHITECTURE -->
+  <div class="section">
+    <h2><span class="icon">🏗</span> System Architecture</h2>
+    <div class="arch">
+      <div>┌─────────────────────────────────────────────────────┐</div>
+      <div>│  <span class="hl">Client (Browser)</span>                                    │</div>
+      <div>│  React SPA  →  Vite Build  →  Nginx (Docker / Render) │</div>
+      <div>└────────────────────┬────────────────────────────────┘</div>
+      <div>                     <span class="arrow">↓ HTTPS REST API calls</span></div>
+      <div>┌────────────────────▼────────────────────────────────┐</div>
+      <div>│  <span class="hl">Backend (Node.js / Express)</span>                          │</div>
+      <div>│  Auth  │  Jobs  │  Profile  │  Applications          │</div>
+      <div>└────────────────────┬────────────────────────────────┘</div>
+      <div>                     <span class="arrow">↓ Mongoose ODM</span></div>
+      <div>┌────────────────────▼────────────────────────────────┐</div>
+      <div>│  <span class="hl">MongoDB</span>  (Atlas in prod / local in dev)              │</div>
+      <div>│  Users │ Jobs │ Profiles │ Applications             │</div>
+      <div>└─────────────────────────────────────────────────────┘</div>
+    </div>
+  </div>
+
+  <!-- KEY FEATURES -->
+  <div class="section">
+    <h2><span class="icon">✨</span> Key Features</h2>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>Authentication & Security</h3>
+        <ul>
+          <li>JWT-based stateless authentication</li>
+          <li>OTP email verification via Nodemailer</li>
+          <li>Password hashing with Bcrypt.js</li>
+          <li>Forgot / Reset Password flow</li>
+          <li>Role-based access (Student / Recruiter / Admin)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Job & Internship Module</h3>
+        <ul>
+          <li>Filter by type: Internship, Full-time, Part-time, Contract</li>
+          <li>Search by skills, location, experience level</li>
+          <li>Real-time application status tracking</li>
+          <li>Duplicate application prevention</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Student Profile</h3>
+        <ul>
+          <li>Bio, contact & social links</li>
+          <li>Education & Work Experience timeline</li>
+          <li>Skills with proficiency levels</li>
+          <li>Certifications with URLs</li>
+          <li>Resume upload & management</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Recruiter Dashboard</h3>
+        <ul>
+          <li>Create / Edit / Delete job listings</li>
+          <li>Toggle job open/closed status</li>
+          <li>View all applicants per job</li>
+          <li>Change application status (shortlist, interview, accept, reject)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- DATABASE SCHEMA -->
+  <div class="section">
+    <h2><span class="icon">🗃</span> Database Schema (Collections)</h2>
+    <table>
+      <tr><th>Collection</th><th>Key Fields</th><th>Purpose</th></tr>
+      <tr><td><strong>users</strong></td><td>name, email, password (hashed), role, resetOtp</td><td>Authentication & role management</td></tr>
+      <tr><td><strong>jobs</strong></td><td>title, company, location, type, salary, skills, recruiter (ref)</td><td>Job/internship listings</td></tr>
+      <tr><td><strong>profiles</strong></td><td>user (ref), bio, skills[], education[], experience[], certifications[], resume, socials</td><td>Student professional profile</td></tr>
+      <tr><td><strong>applications</strong></td><td>job (ref), applicant (ref), status, resume</td><td>Application tracking with unique compound index</td></tr>
+    </table>
+  </div>
+
+  <!-- API ENDPOINTS -->
+  <div class="section">
+    <h2><span class="icon">🔌</span> API Endpoints</h2>
+    <table>
+      <tr><th>Module</th><th>Base Route</th><th>Key Operations</th></tr>
+      <tr><td>Auth</td><td>/api/auth</td><td>Register, Login, Forgot Password, Verify OTP, Reset Password</td></tr>
+      <tr><td>Jobs</td><td>/api/jobs</td><td>List all, Get by ID, Create, Update, Delete (recruiter)</td></tr>
+      <tr><td>Profile</td><td>/api/profile</td><td>Get my profile, Create/Update profile, Upload resume</td></tr>
+      <tr><td>Applications</td><td>/api/applications</td><td>Apply to job, Get my applications, Get applicants (recruiter), Update status</td></tr>
+    </table>
+  </div>
+
+  <!-- PAGES -->
+  <div class="section">
+    <h2><span class="icon">📄</span> Frontend Pages</h2>
+    <div class="grid grid-3">
+      <div class="card"><h3>Public Pages</h3><ul><li>Home (Landing)</li><li>Login / Register</li><li>Forgot / Reset Password</li><li>OTP Verification</li><li>Blog, FAQ, Resume Guide</li><li>Recruiter Landing</li></ul></div>
+      <div class="card"><h3>Student Pages</h3><ul><li>Student Dashboard</li><li>Jobs Listing & Search</li><li>Complete Profile</li><li>Edit Profile</li></ul></div>
+      <div class="card"><h3>Recruiter Pages</h3><ul><li>Recruiter Dashboard</li><li>Post / Manage Jobs</li><li>View Applicants</li><li>Application Status Mgmt</li></ul></div>
+    </div>
+  </div>
+
+  <!-- DEPLOYMENT -->
+  <div class="section">
+    <h2><span class="icon">🚀</span> Deployment & DevOps</h2>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>Docker Setup</h3>
+        <ul>
+          <li>3-service Docker Compose: MongoDB, Backend, Frontend</li>
+          <li>Multi-stage Dockerfile for optimised images</li>
+          <li>Nginx serves the React build in production</li>
+          <li>Named volumes for data persistence</li>
+          <li>Health checks on all services</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Cloud Deployment</h3>
+        <ul>
+          <li>GitHub Actions CI/CD pipeline</li>
+          <li>Frontend hosted on Render (Static Site)</li>
+          <li>Backend hosted on Render (Web Service)</li>
+          <li>MongoDB Atlas for cloud database</li>
+          <li>Environment-based config via .env</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECURITY -->
+  <div class="section">
+    <h2><span class="icon">🔒</span> Security Measures</h2>
+    <div class="grid grid-3">
+      <div class="card"><h3>API Security</h3><ul><li>Helmet.js HTTP headers</li><li>CORS whitelist</li><li>express-validator input validation</li><li>Morgan request logging</li></ul></div>
+      <div class="card"><h3>Auth Security</h3><ul><li>JWT tokens (httpOnly)</li><li>Bcrypt password hashing (salt 10)</li><li>Time-limited OTP for reset</li><li>Password field select:false</li></ul></div>
+      <div class="card"><h3>File Security</h3><ul><li>Multer file type validation</li><li>Static folder isolation (/uploads)</li><li>Environment secrets via .env</li></ul></div>
+    </div>
+  </div>
+
+  <!-- CONCLUSION -->
+  <div class="section">
+    <h2><span class="icon">📝</span> Conclusion</h2>
+    <p>CareerNest successfully demonstrates a production-grade full-stack web application addressing the real-world problem of student career discovery. It employs the MERN stack with industry-standard practices including JWT authentication, role-based access control, containerised deployment with Docker, and automated CI/CD pipelines via GitHub Actions.</p>
+    <p>The project covers every layer of modern software development — from database design and REST API architecture to responsive UI/UX, file management, email services, and cloud deployment — making it a comprehensive showcase of full-stack engineering skills.</p>
+  </div>
+
+  <div class="footer">
+    CareerNest v1.0.0 &nbsp;|&nbsp; Full-Stack MERN Application &nbsp;|&nbsp; Deployed on Render &nbsp;|&nbsp; &copy; 2025 Om Prakash Kewatiya
+  </div>
+
+</div>
+
+</body>
+</html>

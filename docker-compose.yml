@@ -62,7 +62,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        - VITE_API_URL=http://localhost:5005  # Backend URL for local dev
+        - VITE_API_BASE_URL=http://localhost:5005/api  # Correct build arg matching frontend Dockerfile
     container_name: careernest-frontend
     restart: unless-stopped
     ports:

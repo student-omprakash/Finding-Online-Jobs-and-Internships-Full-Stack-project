@@ -1,0 +1,47 @@
+# ─── Dockerfile.jenkins ───────────────────────────────────────────────────────
+# Custom Jenkins image containing Node.js 20, npm, Docker CLI, and Docker Compose.
+# Extends jenkins/jenkins:lts
+# ──────────────────────────────────────────────────────────────────────────────
+
+FROM jenkins/jenkins:lts
+USER root
+
+# Disable interactive prompts during package installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install dependencies, Docker GPG Key, Docker Repository, NodeSource, and Node.js
+RUN apt-get update && apt-get install -y \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release && \
+    # Create directory for Docker keyrings
+    mkdir -p /etc/apt/keyrings && \
+    # Download Docker GPG key
+    curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg && \
+    # Add Docker repository to sources list
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null && \
+    # Download NodeSource Node.js 20 installation script and run it
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    # Install Node.js, Docker CLI, and Docker Compose plugin
+    apt-get update && apt-get install -y \
+    docker-ce-cli \
+    docker-compose-plugin \
+    nodejs && \
+    # Create docker group inside container and add jenkins user to it
+    groupadd -g 999 docker || true && \
+    usermod -aG docker jenkins && \
+    # Create a symlink to support both 'docker-compose' and 'docker compose' commands
+    ln -s /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose || true && \
+    # Configure git globally for root user to allow workspace checkout
+    git config --global --add safe.directory '*' && \
+    # Clean up cache to minimize image size
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Switch back to the jenkins user
+USER jenkins
+# Configure git globally for jenkins user to allow workspace checkout
+RUN git config --global --add safe.directory '*'
+
