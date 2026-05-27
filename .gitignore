@@ -38,3 +38,11 @@ docker-compose.override.yml
 .idea/
 *.swp
 *.swo
+
+# ─── Generated Reports & Large Files ─────────────────────────────────────────
+# These caused Git pack corruption and Jenkins build failures — never commit them
+*.pdf
+CareerNest_Project_Report.html
+synopsis.html
+generate_pdf.js
+.github/project_report*
