@@ -99,7 +99,7 @@ const HeroSection = () => {
             transition={{ duration: 0.5 }}
             className="text-5xl md:text-7xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-6 leading-tight"
           >
-            Find your dream job now here only
+            Find your dream job and be happy
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}

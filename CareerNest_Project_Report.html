@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CareerNest – Project Report</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  /* Suppress Chrome default header/footer */
+  @page {
+    size: A4;
+    margin: 1.8cm 1.8cm 1.8cm 2.5cm;
+  }
+
+  body {
+    font-family: 'Times New Roman', Times, serif;
+    background: #fff;
+    color: #000;
+    font-size: 11pt;
+    line-height: 1.45;
+  }
+
+  /* Print Button */
+  .print-bar {
+    background: #1a1a1a;
+    padding: 10px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .print-bar span { color: #fff; font-size: 13px; font-family: Arial, sans-serif; }
+  .print-btn {
+    background: #444; border: none; color: #fff; padding: 7px 20px;
+    font-size: 12px; font-family: Arial, sans-serif; cursor: pointer; border-radius: 4px;
+  }
+
+  @media print {
+    .print-bar { display: none !important; }
+    body { font-size: 11pt; line-height: 1.45; }
+    .page { padding: 0; }
+    .page-break { page-break-before: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    tr { page-break-inside: avoid; }
+    @page { margin: 1.8cm 1.8cm 1.8cm 2.5cm; }
+  }
+
+  .page { max-width: 210mm; margin: 0 auto; padding: 1.8cm 1.8cm 1.8cm 2.5cm; }
+
+  /* COVER */
+  .cover {
+    text-align: center; min-height: 93vh;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    gap: 8px;
+  }
+  .cover-title-top  { font-size: 14pt; font-weight: bold; }
+  .cover-sub-top    { font-size: 11pt; margin-bottom: 16px; }
+  .cover-proj-title { font-size: 15pt; font-weight: bold; margin-bottom: 4px; }
+  .cover-proj-sub   { font-size: 11pt; font-style: italic; margin-bottom: 18px; }
+  .cover-label      { font-size: 11pt; margin-top: 10px; }
+  .cover-name       { font-size: 13pt; font-weight: bold; }
+  .cover-detail     { font-size: 11pt; }
+  .cover-uni        { font-size: 12pt; font-weight: bold; margin-top: 22px; }
+  .cover-uni-sub    { font-size: 11pt; }
+
+  /* HEADINGS */
+  h1.main  { font-size: 13pt; font-weight: bold; text-align: center; margin: 16px 0 10px; text-decoration: underline; text-transform: uppercase; }
+  h2.ch    { font-size: 12pt; font-weight: bold; margin: 14px 0 6px; text-transform: uppercase; }
+  h3.sub   { font-size: 11pt; font-weight: bold; margin: 10px 0 4px; }
+
+  p   { margin-bottom: 6px; text-align: justify; }
+  pre { font-family: 'Courier New', monospace; font-size: 8.5pt; background: #f9f9f9; border: 1px solid #ccc; padding: 7px 10px; margin: 6px 0; overflow-x: auto; white-space: pre-wrap; line-height: 1.4; }
+
+  ul.ul { margin: 4px 0 8px 24px; }
+  ul.ul li { margin-bottom: 3px; text-align: justify; font-size: 11pt; }
+  ol.ol { margin: 4px 0 8px 24px; }
+  ol.ol li { margin-bottom: 3px; font-size: 11pt; }
+
+  table.t { width: 100%; border-collapse: collapse; margin: 6px 0 10px; font-size: 10pt; }
+  table.t th { border: 1px solid #000; padding: 4px 7px; font-weight: bold; background: #f0f0f0; text-align: left; }
+  table.t td { border: 1px solid #000; padding: 4px 7px; vertical-align: top; }
+
+  table.toc th { border: 1px solid #000; padding: 4px 7px; font-weight: bold; background: #f0f0f0; }
+  table.toc td { border: 1px solid #000; padding: 4px 7px; }
+  table.toc    { width: 100%; border-collapse: collapse; margin: 6px 0; font-size: 10.5pt; }
+
+  .sig-row { display: flex; justify-content: space-between; margin-top: 30px; gap: 20px; }
+  .sig-block { flex: 1; }
+  .sig-line { border-bottom: 1px solid #000; width: 140px; margin-bottom: 3px; }
+  .sig-label { font-size: 10.5pt; font-weight: bold; }
+  .sig-sub   { font-size: 10pt; }
+
+  .right  { text-align: right; }
+  .italic { font-style: italic; }
+  .gap    { margin: 7px 0; }
+  .gap-lg { margin: 14px 0; }
+</style>
+</head>
+<body>
+
+<div class="print-bar">
+  <span>CareerNest — Project Report</span>
+  <button class="print-btn" onclick="window.print()">🖨️ Print / Save as PDF</button>
+</div>
+
+<div class="page">
+
+<!-- ══════════════════════ COVER ══════════════════════ -->
+<div class="cover">
+  <div class="cover-title-top">PROJECT REPORT</div>
+  <div class="cover-sub-top">(Project Term January – May 2025)</div>
+
+  <div class="cover-proj-title">CareerNest — Full-Stack Job &amp; Internship Discovery Platform</div>
+  <div class="cover-proj-sub">(React | Node.js | MongoDB | Docker | Jenkins | GitHub Actions | Prometheus | Grafana)</div>
+
+  <div class="cover-label">Submitted by</div>
+  <div class="cover-name">[Student Name]</div>
+  <div class="cover-detail">Registration Number : [Roll No.]</div>
+  <div class="cover-detail">Course Code : [Course Code]</div>
+
+  <div class="cover-label" style="margin-top:20px;">Under the Guidance of</div>
+  <div class="cover-name">[Guide Name]</div>
+  <div class="cover-detail">[Designation]</div>
+
+  <div class="cover-uni">[School / Department Name]</div>
+  <div class="cover-uni-sub">[University Name], [City], [State]</div>
+</div>
+
+<!-- ══════════════════════ DECLARATION ══════════════════════ -->
+<div class="page-break">
+  <h1 class="main">Declaration</h1>
+  <p>I hereby declare that the project work entitled <strong>"CareerNest — Full-Stack Job &amp; Internship Discovery Platform"</strong> is an authentic record of my own work carried out as requirements of the Project for the award of [B.Tech / MCA] Degree in [Computer Science and Engineering] from [University Name], under the guidance of [Guide Name], during [Year]. All the information furnished in this project report is based on my own intensive work and is genuine.</p>
+
+  <div class="gap"></div>
+  <p>Name of Student &nbsp;&nbsp;: &nbsp;&nbsp;[Student Name]</p>
+  <p>Registration No. &nbsp;: &nbsp;&nbsp;[Roll No.]</p>
+  <div class="gap-lg"></div>
+  <p>Date: [DD-MM-YYYY] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;________________________________</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Signature of Student</p>
+</div>
+
+<!-- ══════════════════════ CERTIFICATE ══════════════════════ -->
+<div class="page-break">
+  <h1 class="main">Certificate</h1>
+  <p>This is to certify that the declaration statement made by the student is correct to the best of my knowledge and belief. He/She has completed this Project under my guidance and supervision. The present work is the result of his/her original investigation, effort and study. No part of the work has ever been submitted for any other degree at any University.</p>
+  <p>The Project is fit for the submission and partial fulfillment of the conditions for the award of [B.Tech / MCA] Degree in [Computer Science and Engineering] from [University Name], [City].</p>
+
+  <div class="gap-lg"></div>
+  <div class="gap-lg"></div>
+  <p>________________________________</p>
+  <p>Signature and Name of the Mentor</p>
+  <div class="gap"></div>
+  <p>[Department Name],</p>
+  <p>[University Name], [City], [State].</p>
+  <div class="gap"></div>
+  <p>Date : [DD-MM-YYYY]</p>
+</div>
+
+<!-- ══════════════════════ ACKNOWLEDGEMENT ══════════════════════ -->
+<div class="page-break">
+  <h1 class="main">Acknowledgement</h1>
+  <p>I would like to express my sincere gratitude to my faculty mentor, <strong>[Guide Name]</strong>, for providing continuous guidance, motivation, and support throughout the development of this project. Their expertise and constructive feedback were invaluable in shaping the direction and quality of this work.</p>
+  <p>I am also grateful to the [Department Name], [University Name], for providing the necessary infrastructure, resources, and a conducive environment to carry out this project.</p>
+  <p>Special thanks to the open-source communities behind React, Node.js, MongoDB, Docker, Jenkins, GitHub Actions, Prometheus, and Grafana, whose well-documented tools made this project possible.</p>
+  <p>Finally, I thank my family and friends for their constant encouragement and moral support throughout this endeavour.</p>
+  <div class="gap-lg"></div>
+  <p class="right">[Student Name]</p>
+  <p class="right">[Roll No.]</p>
+</div>
+
+<!-- ══════════════════════ TABLE OF CONTENTS ══════════════════════ -->
+<div class="page-break">
+  <h1 class="main">Table of Contents</h1>
+  <table class="toc">
+    <tr><th style="width:12%">Section</th><th>Title</th><th style="width:12%">Page</th></tr>
+    <tr><td>Declaration</td><td>Student Declaration</td><td>(ii)</td></tr>
+    <tr><td>Certificate</td><td>Faculty Certificate</td><td>(iii)</td></tr>
+    <tr><td>Acknowledgement</td><td>Acknowledgement</td><td>(iv)</td></tr>
+    <tr><td>1</td><td>Introduction</td><td>1</td></tr>
+    <tr><td>2</td><td>Scope of the Study / Problem Statement</td><td>2</td></tr>
+    <tr><td>3</td><td>Existing Systems</td><td>3</td></tr>
+    <tr><td>4</td><td>Software Requirement Analysis</td><td>4</td></tr>
+    <tr><td>5</td><td>System Design</td><td>7</td></tr>
+    <tr><td>6</td><td>Module Description &amp; Features</td><td>10</td></tr>
+    <tr><td>7</td><td>DevOps, CI/CD &amp; Monitoring</td><td>13</td></tr>
+    <tr><td>8</td><td>Testing</td><td>15</td></tr>
+    <tr><td>9</td><td>Deployment</td><td>17</td></tr>
+    <tr><td>10</td><td>Challenges &amp; Solutions</td><td>18</td></tr>
+    <tr><td>11</td><td>Future Enhancements &amp; Conclusion</td><td>19</td></tr>
+    <tr><td>12</td><td>Bibliography</td><td>20</td></tr>
+  </table>
+</div>
+
+<!-- ══════════════════════ CH 1: INTRODUCTION ══════════════════════ -->
+<div class="page-break">
+  <h2 class="ch">1. Introduction</h2>
+  <p>In today's competitive digital economy, students and fresh graduates face a fragmented and overwhelming job search experience. Existing job portals are either too broad for entry-level seekers, lack integrated profile management, or provide no real-time visibility into the application process. Recruiters looking to hire freshers also struggle with the absence of a dedicated, structured platform focused on early-career talent.</p>
+  <p>CareerNest is a full-stack web application designed to bridge this gap. It serves as a centralised, role-based ecosystem where students can discover jobs and internships matching their skills, build comprehensive professional profiles, and track their application status in real time. Simultaneously, recruiters can post job listings, manage applicants, and update application statuses through a dedicated dashboard.</p>
+  <p>The application is built using the MERN stack (MongoDB, Express.js, React, Node.js), deployed live on Render cloud hosting, and backed by a complete DevOps infrastructure including Docker containerisation, Jenkins CI/CD pipeline, GitHub Actions workflows, and a Prometheus + Grafana monitoring stack.</p>
+
+  <h3 class="sub">1.1. Project Background</h3>
+  <p>The project was conceived as a solution to a real and commonly faced challenge: the absence of a student-centric, all-in-one platform combining profile management, job discovery, real-time application tracking, and recruiter tools in a single system. CareerNest was developed incorporating not only the application layer but also a complete DevOps lifecycle — making it a comprehensive demonstration of production-grade software engineering.</p>
+
+  <h3 class="sub">1.2. Project Objectives</h3>
+  <ul class="ul">
+    <li>Build a scalable full-stack MERN web application with a clean REST API architecture.</li>
+    <li>Implement JWT-based authentication with role-based access control (Student, Recruiter, Admin).</li>
+    <li>Provide students a platform to discover jobs, build professional profiles, and track applications in real time.</li>
+    <li>Provide recruiters a dashboard to post job listings, manage applicants, and update application statuses.</li>
+    <li>Implement Docker Compose orchestration for MongoDB, Backend, Frontend, Prometheus, and Grafana.</li>
+    <li>Set up a Jenkins CI/CD pipeline with lint, build, syntax check, and Docker validation stages.</li>
+    <li>Integrate GitHub Actions for automated CI and CD (Render deployment health monitoring).</li>
+    <li>Implement Prometheus + Grafana real-time backend monitoring (HTTP metrics, CPU, memory).</li>
+    <li>Deploy the application live on Render cloud with MongoDB Atlas as the production database.</li>
+  </ul>
+</div>
+
+<!-- ══════════════════════ CH 2: SCOPE / PROBLEM ══════════════════════ -->
+<div class="page-break">
+  <h2 class="ch">2. Scope of the Study / Problem Statement</h2>
+
+  <h3 class="sub">2.1. Problem Statement</h3>
+  <p>Students and freshers face several critical challenges with existing job and internship portals:</p>
+  <ul class="ul">
+    <li><strong>Fragmented Platforms:</strong> No single platform combines internships, full-time roles, profile management, and application tracking in a unified system.</li>
+    <li><strong>Poor UX for Freshers:</strong> Most platforms are designed for experienced professionals and overwhelm entry-level seekers.</li>
+    <li><strong>No Real-Time Application Tracking:</strong> Students apply and receive no feedback or visibility into their application status.</li>
+    <li><strong>No Integrated Profile Builder:</strong> Students must maintain separate documents, portfolios, and links across different platforms.</li>
+    <li><strong>Recruiter Gaps:</strong> No dedicated platform with structured applicant management for freshers hiring.</li>
+    <li><strong>No Skill-Based Matching:</strong> Existing systems do not match job listings to student skill profiles.</li>
+  </ul>
+
+  <h3 class="sub">2.2. Scope of Solution</h3>
+  <p>CareerNest addresses all the above by implementing:</p>
+  <ul class="ul">
+    <li>A unified role-based platform for Students and Recruiters with separate purpose-built dashboards.</li>
+    <li>A comprehensive student profile covering bio, education, experience, skills, certifications, resume upload, and social links.</li>
+    <li>Job listing with filters for type (Internship, Full-time, Part-time, Contract), location, skills, and experience level.</li>
+    <li>Real-time application tracking with five lifecycle statuses: Applied → Shortlisted → Interviewing → Accepted / Rejected.</li>
+    <li>Skill-based job recommendations from the student's profile skills.</li>
+    <li>A complete DevOps pipeline with Docker, Jenkins, GitHub Actions, Prometheus, and Grafana.</li>
+  </ul>
+</div>
+
+<!-- ══════════════════════ CH 3: EXISTING SYSTEMS ══════════════════════ -->
+<div class="page-break">
+  <h2 class="ch">3. Existing Systems</h2>
+  <p>The following existing platforms were studied and analysed during the design phase:</p>
+  <table class="t">
+    <tr><th>Platform</th><th>Strengths</th><th>Limitations</th></tr>
+    <tr><td>LinkedIn</td><td>Large professional network; recruiter tools; profile system</td><td>Overwhelming for freshers; key features behind paywall; not internship-focused</td></tr>
+    <tr><td>Naukri.com</td><td>Large Indian job database; resume builder</td><td>Complex UI; spam-heavy; no skill-to-job matching</td></tr>
+    <tr><td>Internshala</td><td>Internship-focused; student-friendly</td><td>Only internships; no full-time roles; minimal recruiter features</td></tr>
+    <tr><td>Indeed</td><td>Global reach; diverse job types</td><td>No integrated profile builder; no real-time application tracking</td></tr>
+    <tr><td>CareerNest</td><td>Unified internships + full-time; real-time tracking; role-based dashboards; integrated profile builder; open-source</td><td>—</td></tr>
+  </table>
+  <p>Based on this analysis, it was concluded that no existing platform sufficiently serves the dual needs of students and recruiters in a unified, student-centric manner. CareerNest fills this gap.</p>
+</div>
+
+<!-- ══════════════════════ CH 4: SOFTWARE REQUIREMENTS ══════════════════════ -->
+<div class="page-break">
+  <h2 class="ch">4. Software Requirement Analysis</h2>
+
+  <h3 class="sub">4.1. General Description</h3>
+  <p>CareerNest is a web application serving two user types — Students and Recruiters. The backend is a Node.js/Express REST API handling authentication, job management, profile management, and application tracking, backed by MongoDB. The frontend is a React SPA. The system is containerised with Docker and deployed on Render cloud hosting.</p>
+
+  <h3 class="sub">4.2. Functional Requirements</h3>
+  <ul class="ul">
+    <li><strong>FR1 — Registration &amp; Login:</strong> Users register as Student or Recruiter with email/password. A JWT token is returned on successful login.</li>
+    <li><strong>FR2 — Password Recovery:</strong> Forgot Password flow using a time-limited OTP sent via Nodemailer (Gmail SMTP).</li>
+    <li><strong>FR3 — Role-Based Access:</strong> Three roles — Student, Recruiter, Admin — each with separate API permissions.</li>
+    <li><strong>FR4 — Job Listing &amp; Search:</strong> Browse all open jobs filtered by type, location, skills, and experience level.</li>
+    <li><strong>FR5 — Job Management:</strong> Recruiters create, edit, delete listings and toggle open/closed status.</li>
+    <li><strong>FR6 — Student Profile:</strong> Bio, contact, education, experience, skills (with proficiency), certifications, social links, resume PDF upload.</li>
+    <li><strong>FR7 — Job Application:</strong> One-click apply; unique compound index {job, applicant} prevents duplicates.</li>
+    <li><strong>FR8 — Application Tracking:</strong> Students view all their applications with live status updates.</li>
+    <li><strong>FR9 — Applicant Management:</strong> Recruiters view applicants per job and update statuses.</li>
+    <li><strong>FR10 — Recommendations:</strong> Skill-matched job recommendations based on student profile.</li>
+    <li><strong>FR11 — Health Check:</strong> /health endpoint returns uptime and environment status.</li>
+    <li><strong>FR12 — Metrics:</strong> /metrics endpoint in Prometheus format for monitoring.</li>
+  </ul>
+
+  <h3 class="sub">4.3. Non-Functional Requirements</h3>
+  <table class="t">
+    <tr><th>Category</th><th>Requirement</th></tr>
+    <tr><td>Performance</td><td>API responses within 500ms under normal load; Vite code splitting for fast frontend load.</td></tr>
+    <tr><td>Security</td><td>Bcrypt password hashing (salt: 10); JWT auth; CORS whitelist; server-side input validation via express-validator.</td></tr>
+    <tr><td>Reliability</td><td>Docker health checks ensure correct service start order; graceful error handling with proper HTTP status codes.</td></tr>
+    <tr><td>Scalability</td><td>Stateless JWT enables horizontal scaling; MongoDB Atlas supports elastic data layer scaling.</td></tr>
+    <tr><td>Maintainability</td><td>All infrastructure-as-code (Dockerfile, docker-compose.yml, Jenkinsfile, workflows) version-controlled in Git.</td></tr>
+    <tr><td>Portability</td><td>Docker image runs identically on Windows, macOS, and Linux. No hardcoded credentials — .env files used.</td></tr>
+    <tr><td>Availability</td><td>Rolling Render deployments ensure zero downtime. Health endpoint enables automated monitoring.</td></tr>
+  </table>
+
+  <h3 class="sub">4.4. Technology Stack</h3>
+  <table class="t">
+    <tr><th>Technology</th><th>Version</th><th>Role</th></tr>
+    <tr><td>React</td><td>19</td><td>Frontend SPA — UI library</td></tr>
+    <tr><td>Vite</td><td>6</td><td>Frontend build tool and dev server</td></tr>
+    <tr><td>Tailwind CSS</td><td>3.x</td><td>Utility-first CSS framework</td></tr>
+    <tr><td>Framer Motion</td><td>Latest</td><td>React animation library</td></tr>
+    <tr><td>Node.js</td><td>v20 LTS</td><td>Backend JavaScript runtime</td></tr>
+    <tr><td>Express.js</td><td>v5</td><td>REST API web framework</td></tr>
+    <tr><td>MongoDB</td><td>v7.0</td><td>NoSQL document database</td></tr>
+    <tr><td>Mongoose</td><td>v9</td><td>ODM for MongoDB</td></tr>
+    <tr><td>JWT</td><td>v9</td><td>Stateless authentication</td></tr>
+    <tr><td>Bcrypt.js</td><td>v3</td><td>Password hashing</td></tr>
+    <tr><td>Nodemailer</td><td>v7</td><td>OTP email sending (Gmail SMTP)</td></tr>
+    <tr><td>Multer</td><td>v2</td><td>Resume PDF upload middleware</td></tr>
+    <tr><td>prom-client</td><td>v15</td><td>Prometheus metrics for Node.js</td></tr>
+    <tr><td>Docker + Compose</td><td>v25+</td><td>Containerisation and orchestration</td></tr>
+    <tr><td>Jenkins</td><td>v2.x LTS</td><td>CI/CD pipeline automation</td></tr>
+    <tr><td>GitHub Actions</td><td>Cloud</td><td>Automated CI and CD workflows</td></tr>
+    <tr><td>Prometheus</td><td>v2.51.0</td><td>Metrics scraping and storage</td></tr>
+    <tr><td>Grafana</td><td>v10.4.1</td><td>Monitoring dashboard</td></tr>
+    <tr><td>Nginx</td><td>Latest</td><td>Serves React build in Docker</td></tr>
+    <tr><td>MongoDB Atlas</td><td>Cloud</td><td>Managed cloud database (production)</td></tr>
+    <tr><td>Render</td><td>Cloud</td><td>Cloud hosting platform</td></tr>
+  </table>
+</div>
+
+<!-- ══════════════════════ CH 5: DESIGN ══════════════════════ -->
+<div class="page-break">
+  <h2 class="ch">5. Design</h2>
+
+  <h3 class="sub">5.1. System Architecture</h3>
+  <p>CareerNest follows a three-tier client-server architecture — Presentation (React SPA), Business Logic (Node.js/Express REST API), and Data Layer (MongoDB) — extended with a Prometheus + Grafana monitoring stack.</p>
+
+<pre>
+┌─────────────────────────────────────────────────────────────┐
+│  PRESENTATION LAYER — Client (Browser)                       │
+│  React 19 SPA  →  Vite Build  →  Nginx (Docker / Render)    │
+└──────────────────────────┬──────────────────────────────────┘
+                           ↓  HTTPS REST API Calls (Axios)
+┌──────────────────────────▼──────────────────────────────────┐
+│  BUSINESS LOGIC — Backend (Node.js / Express v5)             │
+│  Auth  |  Jobs  |  Profile  |  Applications                  │
+│  Middlewares: JWT Protect | Role-Based | CORS | Morgan       │
+│  Services: Nodemailer OTP | Multer File Upload | prom-client │
+└──────────────┬───────────────────────────┬──────────────────┘
+               ↓ Mongoose ODM              ↓ /metrics endpoint
+┌──────────────▼──────────────┐  ┌─────────────────────────┐
+│  DATA LAYER — MongoDB        │  │  Prometheus  →  Grafana  │
+│  Atlas (Prod) / Local (Dev)  │  │  Real-Time Monitoring    │
+│  users | jobs | profiles     │  └─────────────────────────┘
+│  applications                │
+└──────────────────────────────┘
+  Orchestrated by Docker Compose | Deployed on Render
+</pre>
+
+  <h3 class="sub">5.2. Database Schema</h3>
+  <table class="t">
+    <tr><th>Collection</th><th>Key Fields</th><th>Purpose</th></tr>
+    <tr><td><strong>users</strong></td><td>name, email, password (bcrypt, select:false), role [student|recruiter|admin], resetPasswordOtp, resetOtpExpire</td><td>Authentication &amp; role management</td></tr>
+    <tr><td><strong>jobs</strong></td><td>title, company, location, type [Internship|Full-time|Part-time|Contract], salary, skills[], experienceLevel, recruiter (ref), isOpen</td><td>Job/internship listings</td></tr>
+    <tr><td><strong>profiles</strong></td><td>user (ref, unique), bio, skills[], contact{}, education[], experience[], certifications[], resume, socials{}</td><td>Student professional profile</td></tr>
+    <tr><td><strong>applications</strong></td><td>job (ref), applicant (ref), status [applied|shortlisted|interviewing|accepted|rejected], resume; unique compound index {job+applicant}</td><td>Application tracking</td></tr>
+  </table>
+
+  <h3 class="sub">5.3. REST API Endpoints</h3>
+  <table class="t">
+    <tr><th>Module</th><th>Base Route</th><th>Key Operations</th><th>Access</th></tr>
+    <tr><td>Auth</td><td>/api/auth</td><td>POST /register, POST /login, GET /me, POST /forgot-password, POST /verify-otp, POST /reset-password</td><td>Public / Protected</td></tr>
+    <tr><td>Jobs</td><td>/api/jobs</td><td>GET / (list), POST / (create), GET /:id, PUT /:id, DELETE /:id, GET /recommendations</td><td>Public / Recruiter</td></tr>
+    <tr><td>Profile</td><td>/api/profile</td><td>GET /me, POST / (create), PUT / (update), POST /resume (upload)</td><td>Protected (Student)</td></tr>
+    <tr><td>Applications</td><td>/api/applications</td><td>POST /apply/:jobId, GET /my-applications, GET /job/:jobId, PUT /:id/status</td><td>Student / Recruiter</td></tr>
+    <tr><td>Monitoring</td><td>/metrics, /health</td><td>GET /metrics (Prometheus), GET /health (uptime check)</td><td>Public (internal)</td></tr>
+  </table>
+
+  <h3 class="sub">5.4. Application Lifecycle Flowchart</h3>
+<pre>
+  Student applies to Job  →  Status: applied
+          │
+          ↓  (Recruiter reviews)
+          Status: shortlisted
+          │
+          ↓  (Interview scheduled)
+          Status: interviewing
+          │
+    ┌─────┴──────┐
+    ↓            ↓
+  accepted    rejected
+</pre>
+</div>
+
+<!-- ══════════════════════ CH 6: MODULES ══════════════════════ -->
+<div class="page-break">
+  <h2 class="ch">6. Module Description &amp; Features</h2>
+
+  <h3 class="sub">6.1. Authentication Module</h3>
+  <p>The authentication system uses JSON Web Tokens (JWT) for stateless, scalable session management. Passwords are hashed using Bcrypt.js (salt: 10). A time-limited OTP-based password recovery flow is implemented via Nodemailer and Gmail SMTP.</p>
+  <ul class="ul">
+    <li><strong>Registration:</strong> Fields validated by express-validator, password bcrypt-hashed, JWT returned on success.</li>
+    <li><strong>Login:</strong> Password validated via bcrypt.compare(); JWT token issued on success.</li>
+    <li><strong>Protected Routes:</strong> Token verified by protect middleware; role checked by authorize() middleware.</li>
+    <li><strong>OTP Reset:</strong> Time-limited OTP sent via Gmail SMTP → user verifies OTP → new password set and hashed.</li>
+  </ul>
+
+  <h3 class="sub">6.2. Job &amp; Internship Module</h3>
+  <p>Provides complete CRUD for job listings with search and filtering by type, location, keyword, and experience level. Recruiters can create, edit, delete listings and toggle open/closed status. A recommendations endpoint returns skill-matched jobs from the student's profile.</p>
+
+  <h3 class="sub">6.3. Student Profile Module</h3>
+  <p>Students can build a detailed professional profile stored in the Profiles collection (one-to-one with Users), covering:</p>
+  <ul class="ul">
+    <li>Bio and contact details (phone, address, city, state, country, zip)</li>
+    <li>Social links: LinkedIn, GitHub, personal website, Twitter</li>
+    <li>Education history and work experience (multiple entries, with current toggle)</li>
+    <li>Skills with proficiency level (Beginner / Intermediate / Expert)</li>
+    <li>Certifications with issuing organisation, date, and URL</li>
+    <li>Resume PDF upload (handled by Multer, stored in /uploads)</li>
+  </ul>
+
+  <h3 class="sub">6.4. Application Management Module</h3>
+  <p>Manages the full lifecycle of a job application. A unique compound MongoDB index on {job, applicant} prevents duplicate applications at the database level. Status transitions: <strong>applied → shortlisted → interviewing → accepted / rejected</strong>. Students view all their applications and live statuses; recruiters view all applicants per job and update statuses with one click.</p>
+
+  <h3 class="sub">6.5. Recruiter Dashboard</h3>
+  <p>Provides a consolidated view of all job listings with total applications received, per-job applicant lists, applicant profile and resume access, and one-click status updates. Recruiters can create, edit, delete job listings and toggle open/closed status from the dashboard.</p>
+
+  <h3 class="sub">6.6. Frontend Page Structure</h3>
+  <table class="t">
+    <tr><th>Category</th><th>Pages</th></tr>
+    <tr><td>Public</td><td>Home (Landing), Login, Register, Forgot Password, Verify OTP, Reset Password, Static Pages (Blog, FAQ, Resume Guide)</td></tr>
+    <tr><td>Student</td><td>Student Dashboard, Jobs Listing &amp; Search, Complete Profile, Edit Profile</td></tr>
+    <tr><td>Recruiter</td><td>Recruiter Dashboard, Post / Manage Jobs, View Applicants, Application Status Management</td></tr>
+  </table>
+</div>
+
+<!-- ══════════════════════ CH 7: DEVOPS ══════════════════════ -->
+<div class="page-break">
+  <h2 class="ch">7. DevOps, CI/CD &amp; Monitoring</h2>
+
+  <h3 class="sub">7.1. Docker Containerisation</h3>
+  <p>The application is fully containerised. A docker-compose.yml file orchestrates five services:</p>
+  <table class="t">
+    <tr><th>Service</th><th>Image</th><th>Port</th><th>Purpose</th></tr>
+    <tr><td>mongodb</td><td>mongo:7.0</td><td>27017</td><td>Local database with named volume; health check via mongosh ping</td></tr>
+    <tr><td>backend</td><td>Custom Dockerfile (Node.js)</td><td>5005</td><td>Express.js API; starts only after MongoDB passes health check</td></tr>
+    <tr><td>frontend</td><td>Multi-stage Dockerfile (Vite→Nginx)</td><td>3000→80</td><td>React SPA compiled by Vite, served by Nginx</td></tr>
+    <tr><td>prometheus</td><td>prom/prometheus:v2.51.0</td><td>9090</td><td>Scrapes /metrics every 5 seconds</td></tr>
+    <tr><td>grafana</td><td>grafana/grafana:10.4.1</td><td>4000→3000</td><td>Monitoring dashboard connected to Prometheus</td></tr>
+  </table>
+  <p>All services communicate via a named internal bridge network (careernest-network). Named volumes (mongodb_data, backend_uploads, grafana_data) ensure data persists across container restarts.</p>
+
+  <h3 class="sub">7.2. Jenkins CI/CD Pipeline</h3>
+  <p>A declarative Jenkinsfile automates build and validation through seven sequential stages:</p>
+  <ol class="ol">
+    <li><strong>Workspace Clean</strong> — Removes all artifacts from previous builds using cleanWs().</li>
+    <li><strong>Checkout Code</strong> — Fetches the latest codebase from Git using checkout scm.</li>
+    <li><strong>Install Dependencies</strong> — Installs npm packages for all workspace modules via npm run install:all.</li>
+    <li><strong>Frontend Lint</strong> — Runs ESLint on the React codebase to enforce code quality.</li>
+    <li><strong>Backend Syntax Check</strong> — Runs node --check src/index.js to validate JavaScript syntax without executing.</li>
+    <li><strong>Frontend Production Build</strong> — Compiles the React SPA with Vite into an optimised production bundle.</li>
+    <li><strong>Docker Compose Validation</strong> — Runs docker compose config to validate all five service configurations.</li>
+  </ol>
+
+  <h3 class="sub">7.3. GitHub Actions Workflows</h3>
+  <p><strong>CI Workflow (ci.yml) — Triggers on push/PR to main or develop:</strong></p>
+  <ul class="ul">
+    <li>Job 1: ESLint frontend code quality check on Node.js 20 using npm ci</li>
+    <li>Job 2: Vite production build (runs only if Job 1 passes); verifies dist/ directory exists</li>
+    <li>Job 3: Backend Node.js syntax check (node --check src/index.js)</li>
+  </ul>
+  <p><strong>CD Workflow (cd.yml) — Triggers on push to main only:</strong></p>
+  <ul class="ul">
+    <li>Waits 90 seconds for Render's auto-deploy to pull and build the latest commit</li>
+    <li>Polls /health endpoint with 5 retries at 30-second intervals; handles cold starts gracefully</li>
+    <li>Outputs frontend and backend deployment URLs in the build summary</li>
+  </ul>
+
+  <h3 class="sub">7.4. Prometheus &amp; Grafana Monitoring</h3>
+  <p>The backend exposes a /metrics endpoint via prom-client, scraped by Prometheus every 5 seconds (prometheus.yml). Grafana displays a pre-provisioned custom dashboard (careernest_dashboard.json) covering:</p>
+  <ul class="ul">
+    <li><strong>Default metrics:</strong> Heap memory, CPU usage, event loop lag, garbage collection statistics.</li>
+    <li><strong>Custom metric — http_request_duration_seconds:</strong> Histogram tracking response times labelled by method, route pattern, and HTTP status code. Buckets: 0.1s, 0.3s, 0.5s, 0.9s, 1.5s, 3s, 5s. Route labels use req.route.path to avoid high cardinality from dynamic IDs.</li>
+  </ul>
+</div>
+
+<!-- ══════════════════════ CH 8: TESTING ══════════════════════ -->
+<div class="page-break">
+  <h2 class="ch">8. Testing</h2>
+
+  <h3 class="sub">8.1. Automated Pipeline Test Results</h3>
+  <table class="t">
+    <tr><th>Test</th><th>Tool</th><th>Status</th><th>Notes</th></tr>
+    <tr><td>Frontend Lint</td><td>ESLint</td><td>PASSED</td><td>All JSX/JS files pass lint rules</td></tr>
+    <tr><td>Backend Syntax</td><td>node --check</td><td>PASSED</td><td>No syntax errors in any source file</td></tr>
+    <tr><td>Frontend Build</td><td>Vite build</td><td>PASSED</td><td>dist/ directory generated successfully</td></tr>
+    <tr><td>Docker Validation</td><td>docker compose config</td><td>PASSED</td><td>All 5 service configurations valid</td></tr>
+    <tr><td>Deployment Health</td><td>curl + GitHub Actions</td><td>PASSED</td><td>/health returns HTTP 200 with status: ok</td></tr>
+  </table>
+
+  <h3 class="sub">8.2. Manual API Testing Results (Postman)</h3>
+  <table class="t">
+    <tr><th>Endpoint</th><th>Test Case</th><th>Expected</th><th>Result</th></tr>
+    <tr><td>POST /api/auth/register</td><td>Register new student</td><td>201 + JWT token</td><td>PASSED</td></tr>
+    <tr><td>POST /api/auth/login</td><td>Valid credentials</td><td>200 + JWT token</td><td>PASSED</td></tr>
+    <tr><td>POST /api/auth/login</td><td>Wrong password</td><td>401 Unauthorized</td><td>PASSED</td></tr>
+    <tr><td>POST /api/auth/forgot-password</td><td>Valid email</td><td>200 + OTP sent</td><td>PASSED</td></tr>
+    <tr><td>GET /api/jobs</td><td>Fetch all jobs (public)</td><td>200 + jobs array</td><td>PASSED</td></tr>
+    <tr><td>POST /api/jobs</td><td>Create job as recruiter</td><td>201 + new job</td><td>PASSED</td></tr>
+    <tr><td>POST /api/jobs</td><td>Create job as student</td><td>403 Forbidden</td><td>PASSED</td></tr>
+    <tr><td>POST /api/profile</td><td>Create full profile</td><td>201 + profile object</td><td>PASSED</td></tr>
+    <tr><td>POST /api/applications/apply/:id</td><td>Student applies to job</td><td>201 + application</td><td>PASSED</td></tr>
+    <tr><td>POST /api/applications/apply/:id</td><td>Duplicate application</td><td>400 Already applied</td><td>PASSED</td></tr>
+    <tr><td>PUT /api/applications/:id/status</td><td>Update to shortlisted</td><td>200 + updated application</td><td>PASSED</td></tr>
+    <tr><td>GET /health</td><td>Health check</td><td>200 + {status:"ok", uptime}</td><td>PASSED</td></tr>
+  </table>
+
+  <h3 class="sub">8.3. Frontend Functional Testing</h3>
+  <table class="t">
+    <tr><th>Feature</th><th>Test Case</th><th>Result</th></tr>
+    <tr><td>Navigation</td><td>All routes navigate correctly; protected routes redirect to login if unauthenticated</td><td>PASSED</td></tr>
+    <tr><td>Job Search</td><td>Keyword and location filters update results correctly</td><td>PASSED</td></tr>
+    <tr><td>Dark Mode</td><td>Theme toggle persists across page navigation</td><td>PASSED</td></tr>
+    <tr><td>Profile Form</td><td>All sections save and reload correctly on page refresh</td><td>PASSED</td></tr>
+    <tr><td>Resume Upload</td><td>PDF upload succeeds; non-PDF rejected</td><td>PASSED</td></tr>
+    <tr><td>Responsive Design</td><td>Layout correct at 375px mobile viewport</td><td>PASSED</td></tr>
+    <tr><td>Application Status</td><td>Recruiter status updates are immediately visible on student dashboard</td><td>PASSED</td></tr>
+  </table>
+</div>
+
+<!-- ══════════════════════ CH 9: DEPLOYMENT ══════════════════════ -->
+<div class="page-break">
+  <h2 class="ch">9. Deployment</h2>
+
+  <h3 class="sub">9.1. Cloud Deployment</h3>
+  <p>CareerNest is deployed as a live, publicly accessible application on Render cloud hosting with MongoDB Atlas as the managed cloud database.</p>
+  <table class="t">
+    <tr><th>Component</th><th>Platform</th><th>URL</th></tr>
+    <tr><td>Frontend</td><td>Render Static Site</td><td>careernest-frontendfinding-online-jobs.onrender.com</td></tr>
+    <tr><td>Backend</td><td>Render Web Service (Node.js)</td><td>careernest-backend-r5rj.onrender.com</td></tr>
+    <tr><td>Database</td><td>MongoDB Atlas (M0)</td><td>cloud.mongodb.com</td></tr>
+  </table>
+
+  <h3 class="sub">9.2. Environment Configuration</h3>
+  <p>All secrets are configured as Render environment variables and local .env files (excluded from Git via .gitignore): PORT, MONGO_URI, JWT_SECRET, FRONTEND_URL (CORS), SMTP_EMAIL, SMTP_PASSWORD (OTP emails).</p>
+
+  <h3 class="sub">9.3. Deployment Pipeline</h3>
+<pre>
+  Developer pushes to main branch
+          │
+          ↓
+  GitHub Actions CI (lint, build, syntax check — all pass)
+          │
+          ↓
+  Render auto-deploys both frontend and backend
+          │
+          ↓
+  GitHub Actions CD polls /health (5 retries × 30s)
+          │
+          ↓
+  Application is live on Render
+</pre>
+</div>
+
+<!-- ══════════════════════ CH 10: CHALLENGES ══════════════════════ -->
+<div class="page-break">
+  <h2 class="ch">10. Challenges &amp; Solutions</h2>
+  <table class="t">
+    <tr><th>#</th><th>Challenge</th><th>Solution</th></tr>
+    <tr>
+      <td>1</td>
+      <td>CORS errors in production — frontend and backend on different Render domains blocked API calls.</td>
+      <td>Implemented a dynamic CORS origin whitelist including the production Render URL and localhost. FRONTEND_URL env variable enables configuration without code changes.</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Docker startup order — backend crashed before MongoDB was ready to accept connections.</td>
+      <td>Added depends_on with condition: service_healthy and a MongoDB health check (mongosh ping) so backend only starts after database is ready.</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Render free-tier cold starts — deployment health checks failed due to slow first response after inactivity.</td>
+      <td>CD workflow uses a graceful retry loop (5 attempts × 30s) and treats timeout as a warning, as cold starts are expected on free-tier hosting.</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Password field exposure — hashed passwords accidentally included in some API responses.</td>
+      <td>Added select: false to the password field in the Mongoose User schema so it is never returned in any query unless explicitly requested.</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Duplicate job applications — no prevention mechanism for a student applying to the same job twice.</td>
+      <td>Added a unique compound MongoDB index on {job: 1, applicant: 1} enforcing uniqueness at the database level with a clear API error message.</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>High-cardinality Prometheus metrics — dynamic URL paths (e.g., /api/jobs/64abc...) as labels created excessive time series.</td>
+      <td>Metrics middleware uses req.route.path (pattern /api/jobs/:id) instead of the actual URL, keeping the number of unique label combinations manageable.</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>Ephemeral file storage on Render — uploaded resume files lost on each new deployment.</td>
+      <td>Named Docker volume (backend_uploads) persists files locally. In production, the file path is stored as a relative string in MongoDB, allowing easy migration to cloud storage (e.g., AWS S3).</td>
+    </tr>
+  </table>
+</div>
+
+<!-- ══════════════════════ CH 11: FUTURE & CONCLUSION ══════════════════════ -->
+<div class="page-break">
+  <h2 class="ch">11. Future Enhancements &amp; Conclusion</h2>
+
+  <h3 class="sub">11.1. Future Enhancements</h3>
+  <ul class="ul">
+    <li><strong>AI-Based Recommendations:</strong> Integrate a skill-matching algorithm or ML model for more accurate job recommendations and resume scoring.</li>
+    <li><strong>Real-Time Notifications:</strong> WebSocket-based (Socket.io) notifications so students are instantly alerted on application status changes.</li>
+    <li><strong>Automated Testing Suite:</strong> Unit and integration tests using Jest and Supertest for all API routes.</li>
+    <li><strong>Redis Caching:</strong> Cache frequently accessed job listings to reduce database load under high traffic.</li>
+    <li><strong>Rate Limiting:</strong> express-rate-limit to protect the API against brute-force and excessive requests.</li>
+    <li><strong>Kubernetes Deployment:</strong> Migrate from Docker Compose to Kubernetes with HPA for production-grade horizontal scaling.</li>
+    <li><strong>Cloud File Storage:</strong> Replace local disk resume storage with AWS S3 or Cloudinary for persistent, scalable delivery.</li>
+    <li><strong>Analytics Dashboard:</strong> Student analytics (applications sent, shortlist rate); recruiter analytics (time-to-hire, applicant funnel).</li>
+  </ul>
+
+  <h3 class="sub">11.2. Conclusion</h3>
+  <p>CareerNest successfully demonstrates the design and implementation of a production-grade, full-stack MERN web application addressing a real-world problem in student career discovery. The platform bridges the gap between freshers and recruiters by providing a unified, intuitive ecosystem for job discovery, profile management, and application tracking.</p>
+  <p>The project covers every layer of modern software development — database schema design, REST API architecture, responsive React UI, file management, OTP-based email authentication, security hardening, and cloud deployment. The addition of a complete DevOps stack comprising Docker multi-service orchestration, a Jenkins CI/CD pipeline, GitHub Actions automated workflows, and a Prometheus + Grafana real-time monitoring dashboard elevates CareerNest beyond a typical academic project into a showcase of industry-standard engineering practices.</p>
+  <p>The application is deployed and accessible as a live service on Render, demonstrating the ability to take a concept through design, development, testing, containerisation, and production deployment in a systematic and professional manner. Through this project, comprehensive practical knowledge was acquired in full-stack JavaScript development, NoSQL data modelling, RESTful API design, Docker containerisation, CI/CD automation, and real-time system monitoring.</p>
+</div>
+
+<!-- ══════════════════════ CH 12: BIBLIOGRAPHY ══════════════════════ -->
+<div class="page-break">
+  <h2 class="ch">12. Bibliography</h2>
+  <table class="t">
+    <tr><th>Ref.</th><th>Source</th><th>URL / Details</th></tr>
+    <tr><td>[1]</td><td>React Official Documentation (v19)</td><td>https://react.dev</td></tr>
+    <tr><td>[2]</td><td>Node.js Documentation (v20 LTS)</td><td>https://nodejs.org/en/docs</td></tr>
+    <tr><td>[3]</td><td>Express.js Documentation (v5)</td><td>https://expressjs.com</td></tr>
+    <tr><td>[4]</td><td>MongoDB Documentation</td><td>https://www.mongodb.com/docs</td></tr>
+    <tr><td>[5]</td><td>Mongoose ODM Documentation</td><td>https://mongoosejs.com/docs</td></tr>
+    <tr><td>[6]</td><td>Vite + Tailwind CSS Documentation</td><td>https://vitejs.dev / https://tailwindcss.com/docs</td></tr>
+    <tr><td>[7]</td><td>Docker &amp; Docker Compose</td><td>https://docs.docker.com / https://docs.docker.com/compose</td></tr>
+    <tr><td>[8]</td><td>Jenkins Pipeline Documentation</td><td>https://www.jenkins.io/doc/book/pipeline</td></tr>
+    <tr><td>[9]</td><td>GitHub Actions — Workflow Syntax</td><td>https://docs.github.com/en/actions</td></tr>
+    <tr><td>[10]</td><td>Prometheus &amp; Grafana Documentation</td><td>https://prometheus.io/docs / https://grafana.com/docs</td></tr>
+    <tr><td>[11]</td><td>Render Deployment Documentation</td><td>https://render.com/docs</td></tr>
+    <tr><td>[12]</td><td>JWT, Bcrypt.js, Nodemailer</td><td>https://jwt.io / https://npmjs.com/package/bcryptjs / https://nodemailer.com</td></tr>
+    <tr><td>[13]</td><td>prom-client, Multer, Framer Motion</td><td>https://github.com/siimon/prom-client / https://npmjs.com/package/multer / https://framer.com/motion</td></tr>
+    <tr><td>[14]</td><td>MongoDB Atlas Cloud Database</td><td>https://cloud.mongodb.com</td></tr>
+    <tr><td>[15]</td><td>React Router v7 Documentation</td><td>https://reactrouter.com</td></tr>
+  </table>
+  <p class="italic">All URLs were last accessed on [Date]</p>
+</div>
+
+</div><!-- end .page -->
+</body>
+</html>
