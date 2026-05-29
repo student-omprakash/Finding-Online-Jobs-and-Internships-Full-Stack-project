@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CareerNest — Project Presentation</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #c8cdd8;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* ─── TOP BAR ─── */
+.topbar {
+  height: 44px;
+  background: #1a1f36;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  flex-shrink: 0;
+}
+.topbar-left { color:#fff; font-size:13px; font-weight:700; display:flex;align-items:center;gap:8px; }
+.topbar-left em { color:#818cf8; font-style:normal; }
+.topbar-right { display:flex;align-items:center;gap:10px; }
+.tbar-btn {
+  background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.15);
+  color:#e2e8f0; padding:4px 14px; border-radius:5px; font-size:11px;
+  font-weight:600; cursor:pointer; font-family:inherit; transition:.2s;
+}
+.tbar-btn:hover { background:rgba(255,255,255,0.2); }
+.tbar-count { font-size:12px; color:#94a3b8; font-weight:600; }
+
+/* ─── LAYOUT ─── */
+.layout { display:flex; flex:1; overflow:hidden; }
+
+/* ─── THUMBNAIL PANEL ─── */
+.panel {
+  width:160px; background:#1a1f36;
+  padding:10px 8px; overflow-y:auto;
+  display:flex; flex-direction:column; gap:7px; flex-shrink:0;
+}
+.panel::-webkit-scrollbar { width:3px; }
+.panel::-webkit-scrollbar-thumb { background:#334155; border-radius:3px; }
+.thumb {
+  cursor:pointer; border-radius:5px; overflow:hidden;
+  border:2px solid transparent; transition:.2s; opacity:.55;
+  background:#fff; aspect-ratio:16/9; position:relative; flex-shrink:0;
+}
+.thumb:hover { opacity:.8; border-color:#818cf8; }
+.thumb.active { border-color:#6366f1; opacity:1; box-shadow:0 0 0 1px #6366f1; }
+.thumb-inner { width:100%; height:100%; padding:5px 6px; }
+.thumb-bar { height:3px; border-radius:2px; margin-bottom:3px; }
+.thumb-ttl { font-size:6px; font-weight:800; color:#1e293b; line-height:1.3; margin-bottom:3px; }
+.thumb-line { height:1.5px; background:#e2e8f0; border-radius:1px; margin-bottom:2px; }
+.thumb-line.s { width:65%; }
+.thumb-line.xs { width:40%; }
+.thumb-n { position:absolute; bottom:2px; right:4px; font-size:8px; font-weight:700; color:#94a3b8; }
+
+/* ─── STAGE ─── */
+.stage {
+  flex:1; display:flex; align-items:center; justify-content:center;
+  padding:20px; background:#c8cdd8; overflow:hidden;
+}
+.canvas {
+  aspect-ratio:16/9;
+  width:100%;
+  max-width: min(100%, calc((100vh - 44px - 44px) * 16 / 9));
+  background:#fff;
+  border-radius:3px;
+  box-shadow: 0 8px 40px rgba(0,0,0,.25), 0 2px 8px rgba(0,0,0,.15);
+  overflow:hidden;
+  position:relative;
+}
+
+/* ─── SLIDES ─── */
+.slide { position:absolute; inset:0; display:none; flex-direction:column; background:#fff; }
+.slide.active { display:flex; animation:slIn .3s ease; }
+@keyframes slIn { from{opacity:0;transform:translateX(18px)} to{opacity:1;transform:none} }
+
+/* ─── BOTTOM NAV ─── */
+.bottombar {
+  height:44px; background:#1a1f36;
+  display:flex; align-items:center; justify-content:center; gap:12px; flex-shrink:0;
+}
+.nb {
+  width:30px; height:30px; border-radius:7px;
+  background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12);
+  color:#e2e8f0; font-size:13px; cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-family:inherit; transition:.2s;
+}
+.nb:hover:not(:disabled) { background:rgba(255,255,255,0.18); }
+.nb:disabled { opacity:.3; cursor:not-allowed; }
+.prog { flex:1; max-width:380px; height:4px; background:rgba(255,255,255,0.1); border-radius:4px; overflow:hidden; }
+.prog-fill { height:100%; background:linear-gradient(90deg,#6366f1,#06b6d4); border-radius:4px; transition:width .4s; }
+.key-hint { font-size:10px; color:#475569; font-weight:500; }
+
+/* ════════════════════════════════════════════
+   REUSABLE SLIDE COMPONENTS
+════════════════════════════════════════════ */
+
+/* ─ Top color strip ─ */
+.strip { height:6px; width:100%; flex-shrink:0; }
+.s-indigo { background:linear-gradient(90deg,#4f46e5,#818cf8); }
+.s-blue   { background:linear-gradient(90deg,#2563eb,#38bdf8); }
+.s-green  { background:linear-gradient(90deg,#059669,#34d399); }
+.s-amber  { background:linear-gradient(90deg,#d97706,#fbbf24); }
+.s-red    { background:linear-gradient(90deg,#dc2626,#f87171); }
+.s-purple { background:linear-gradient(90deg,#7c3aed,#c084fc); }
+.s-teal   { background:linear-gradient(90deg,#0d9488,#2dd4bf); }
+.s-rose   { background:linear-gradient(90deg,#e11d48,#fb7185); }
+
+/* ─ Slide header bar ─ */
+.shead {
+  display:flex; align-items:center; gap:14px;
+  padding:10px 40px 9px; border-bottom:2px solid #f1f5f9; flex-shrink:0;
+}
+.shead-icon {
+  width:42px; height:42px; border-radius:10px; font-size:20px;
+  display:flex;align-items:center;justify-content:center; flex-shrink:0;
+}
+.ic-indigo{background:#eef2ff;} .ic-blue{background:#eff6ff;}
+.ic-green{background:#ecfdf5;} .ic-amber{background:#fffbeb;}
+.ic-red{background:#fef2f2;} .ic-purple{background:#faf5ff;}
+.ic-teal{background:#f0fdfa;} .ic-rose{background:#fff1f2;}
+.shead-text h2 { font-size:clamp(15px,2.2vw,20px); font-weight:800; color:#0f172a; letter-spacing:-.3px; }
+.shead-text p  { font-size:clamp(9px,1.1vw,11px); color:#94a3b8; font-weight:500; margin-top:1px; }
+.shead-badge {
+  margin-left:auto; background:#f1f5f9; border-radius:20px;
+  padding:3px 11px; font-size:9.5px; font-weight:700; color:#94a3b8;
+}
+
+/* ─ Slide body ─ */
+.sbody { flex:1; padding:14px 40px 16px; overflow:hidden; display:flex; flex-direction:column; }
+
+/* ─ Bullet point list ─ */
+.blist { list-style:none; display:flex; flex-direction:column; gap:7px; }
+.blist li {
+  display:flex; align-items:flex-start; gap:10px;
+  font-size:clamp(11px,1.4vw,13.5px); color:#334155; line-height:1.6; font-weight:500;
+}
+.blist li .bull {
+  width:22px; height:22px; border-radius:6px; flex-shrink:0; margin-top:1px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px; font-weight:800;
+}
+.bull-indigo{background:#eef2ff;color:#4f46e5;}
+.bull-green{background:#ecfdf5;color:#059669;}
+.bull-blue{background:#eff6ff;color:#2563eb;}
+.bull-amber{background:#fffbeb;color:#d97706;}
+.bull-red{background:#fef2f2;color:#dc2626;}
+.bull-purple{background:#faf5ff;color:#7c3aed;}
+.bull-teal{background:#f0fdfa;color:#0d9488;}
+
+/* ─ Two columns ─ */
+.tcol { display:grid; grid-template-columns:1fr 1fr; gap:16px; flex:1; }
+.tcol3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; flex:1; }
+
+/* ─ Info cards ─ */
+.icard {
+  background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:12px;
+  padding:14px 16px; display:flex; flex-direction:column;
+}
+.icard.bt-indigo{border-top:4px solid #6366f1;}
+.icard.bt-blue{border-top:4px solid #3b82f6;}
+.icard.bt-green{border-top:4px solid #10b981;}
+.icard.bt-amber{border-top:4px solid #f59e0b;}
+.icard.bt-red{border-top:4px solid #ef4444;}
+.icard.bt-purple{border-top:4px solid #8b5cf6;}
+.icard.bt-teal{border-top:4px solid #14b8a6;}
+.icard.bt-rose{border-top:4px solid #f43f5e;}
+.icard .ci { font-size:22px; margin-bottom:7px; }
+.icard h3 { font-size:clamp(11px,1.4vw,13px); font-weight:800; color:#1e293b; margin-bottom:5px; }
+.icard p  { font-size:clamp(9.5px,1.1vw,11.5px); color:#64748b; line-height:1.6; }
+
+/* ─ Stat boxes ─ */
+.stat-row { display:flex; gap:10px; }
+.sbox {
+  flex:1; background:#fff; border:1.5px solid #e2e8f0; border-radius:10px;
+  padding:12px 10px; text-align:center; box-shadow:0 1px 4px rgba(0,0,0,.05);
+}
+.sbox .sv { font-size:clamp(18px,2.5vw,28px); font-weight:900; line-height:1.1; }
+.sbox .sl { font-size:clamp(8px,1vw,10px); color:#94a3b8; font-weight:600; margin-top:3px; text-transform:uppercase; letter-spacing:.5px; }
+.sv-indigo{color:#4f46e5;} .sv-blue{color:#3b82f6;} .sv-green{color:#10b981;}
+.sv-amber{color:#f59e0b;} .sv-red{color:#ef4444;} .sv-purple{color:#8b5cf6;}
+.sv-teal{color:#14b8a6;}
+
+/* ─ Tag pill ─ */
+.tag {
+  display:inline-flex; align-items:center; gap:5px;
+  border-radius:6px; padding:4px 11px;
+  font-size:clamp(9px,1vw,10.5px); font-weight:700;
+}
+.tag-indigo{background:#eef2ff;color:#4f46e5;}
+.tag-green{background:#ecfdf5;color:#059669;}
+.tag-blue{background:#eff6ff;color:#2563eb;}
+.tag-amber{background:#fffbeb;color:#d97706;}
+.tag-red{background:#fef2f2;color:#dc2626;}
+.tag-purple{background:#faf5ff;color:#7c3aed;}
+.tag-teal{background:#f0fdfa;color:#0d9488;}
+
+/* ─ Pipeline step row ─ */
+.pipe-row { display:flex; align-items:stretch; gap:0; flex:1; }
+.pstep {
+  flex:1; background:#f8fafc; border:1.5px solid #e2e8f0;
+  border-radius:10px; padding:10px 8px; text-align:center;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+}
+.pstep .pn {
+  width:22px;height:22px;border-radius:50%;
+  background:#4f46e5;color:#fff;font-size:10px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;margin-bottom:5px;
+}
+.pstep .pi { font-size:20px; margin-bottom:4px; }
+.pstep h4 { font-size:clamp(9px,1.1vw,11px); font-weight:800; color:#1e293b; margin-bottom:3px; }
+.pstep p  { font-size:clamp(8px,.95vw,9.5px); color:#64748b; line-height:1.4; }
+.p-arr { color:#cbd5e1; font-size:14px; padding:0 3px; display:flex;align-items:center; flex-shrink:0; }
+
+/* ─ Flow diagram ─ */
+.flow { display:flex; flex-direction:column; gap:6px; align-items:center; }
+.frow { display:flex;align-items:center;justify-content:center;gap:8px; }
+.fbox {
+  background:#fff; border:1.5px solid #e2e8f0; border-radius:8px;
+  padding:7px 14px; font-size:clamp(9px,1.1vw,11px); font-weight:700;
+  color:#1e293b; text-align:center; white-space:nowrap;
+}
+.fbox small { display:block; font-size:clamp(7px,.85vw,8.5px); font-weight:500; color:#94a3b8; }
+.fbox.fi{background:#eef2ff;border-color:#c7d2fe;color:#4338ca;}
+.fbox.fc{background:#ecfeff;border-color:#a5f3fc;color:#0e7490;}
+.fbox.fg{background:#ecfdf5;border-color:#a7f3d0;color:#065f46;}
+.fbox.fa{background:#fffbeb;border-color:#fde68a;color:#92400e;}
+.fbox.fr{background:#fef2f2;border-color:#fecaca;color:#991b1b;}
+.fbox.fp{background:#faf5ff;border-color:#e9d5ff;color:#6d28d9;}
+.farr { color:#94a3b8; font-size:13px; flex-shrink:0; }
+.fdn { color:#94a3b8; font-size:13px; text-align:center; }
+.fdn small { font-size:8px; font-weight:600; color:#cbd5e1; display:block; }
+
+/* ─── SLIDE 1 SPECIFIC ─── */
+.s1-bg { background:linear-gradient(135deg,#f0f4ff 0%,#fff 50%,#f0fdff 100%); }
+.s1-body { flex:1; display:flex; align-items:center; padding:0 44px; gap:30px; }
+.s1-left { flex:1; }
+.s1-eyebrow {
+  display:inline-flex;align-items:center;gap:6px;
+  background:#eef2ff;border:1.5px solid #c7d2fe;border-radius:20px;
+  padding:5px 16px;font-size:10.5px;font-weight:700;color:#4f46e5;
+  letter-spacing:.8px;text-transform:uppercase;margin-bottom:14px;
+}
+.s1-title {
+  font-size:clamp(36px,5.5vw,60px); font-weight:900;
+  color:#0f172a; letter-spacing:-2px; line-height:1.05; margin-bottom:12px;
+}
+.s1-title span { color:#4f46e5; }
+.s1-desc {
+  font-size:clamp(11px,1.4vw,14px); color:#475569; line-height:1.8;
+  max-width:480px; margin-bottom:20px; font-weight:400;
+}
+.s1-chips { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:22px; }
+.s1-chip {
+  background:#fff; border:1.5px solid #e2e8f0; border-radius:7px;
+  padding:5px 13px; font-size:10.5px; font-weight:700; color:#475569;
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
+}
+.s1-author {
+  display:flex;align-items:center;gap:10px;background:#fff;
+  border:1.5px solid #e2e8f0;border-radius:10px;padding:10px 16px;
+  max-width:300px;box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.av {
+  width:38px;height:38px;border-radius:50%;
+  background:linear-gradient(135deg,#4f46e5,#06b6d4);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:800;color:#fff;flex-shrink:0;
+}
+.s1-author .an { font-size:12.5px;font-weight:800;color:#1e293b; }
+.s1-author .ar { font-size:10px;color:#94a3b8; }
+.s1-right {
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+  width:200px;
+}
+.logo-box {
+  width:100px;height:100px;border-radius:24px;
+  background:linear-gradient(135deg,#4f46e5,#7c3aed);
+  display:flex;align-items:center;justify-content:center;
+  font-size:46px;box-shadow:0 12px 36px rgba(79,70,229,.28);
+}
+.s1-stats { display:grid; grid-template-columns:1fr 1fr; gap:8px; width:100%; }
+.s1-stat {
+  background:#fff;border:1.5px solid #e2e8f0;border-radius:9px;
+  padding:9px 6px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.05);
+}
+.s1-stat .v { font-size:17px;font-weight:900;color:#4f46e5; }
+.s1-stat .l { font-size:8.5px;color:#94a3b8;font-weight:600; }
+
+/* ─── SLIDE 11 SPECIFIC ─── */
+.s11-bg { background:linear-gradient(135deg,#f0f4ff 0%,#fff 50%,#f0fdff 100%); }
+.s11-body { flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 44px 16px;text-align:center; }
+.s11-logo { width:70px;height:70px;border-radius:18px;background:linear-gradient(135deg,#4f46e5,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:32px;box-shadow:0 10px 30px rgba(79,70,229,.25);margin-bottom:14px; }
+.s11-title { font-size:clamp(26px,4vw,42px);font-weight:900;color:#0f172a;letter-spacing:-1.5px;margin-bottom:5px; }
+.s11-title span{color:#4f46e5;}
+.s11-sub { font-size:clamp(10px,1.2vw,13px);color:#64748b;margin-bottom:18px;font-weight:400; }
+.s11-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:680px;margin-bottom:16px; }
+.s11-card { background:#fff;border:1.5px solid #e2e8f0;border-radius:10px;padding:12px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.05); }
+.s11-card .ei { font-size:22px;margin-bottom:5px; }
+.s11-card h4 { font-size:11.5px;font-weight:800;color:#1e293b;margin-bottom:3px; }
+.s11-card p  { font-size:9.5px;color:#64748b;line-height:1.5; }
+.s11-stats { display:flex;gap:10px;margin-bottom:18px; }
+.s11-stat { background:#fff;border:1.5px solid #e2e8f0;border-radius:10px;padding:10px 16px;text-align:center; }
+.s11-stat .sv { font-size:20px;font-weight:900;color:#4f46e5; }
+.s11-stat .sl { font-size:8.5px;color:#94a3b8;font-weight:600; }
+.s11-ty { font-size:clamp(16px,2vw,22px);font-weight:900;color:#1e293b;margin-bottom:4px; }
+.s11-name { font-size:11.5px;color:#94a3b8; }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-left">🐦 Career<em>Nest</em> &mdash; Project Presentation</div>
+  <div class="topbar-right">
+    <span class="tbar-count" id="top-count">Slide 1 of 11</span>
+    <button class="tbar-btn" onclick="toggleFullscreen()">⛶ Present</button>
+  </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- THUMBNAIL PANEL -->
+  <div class="panel" id="panel"></div>
+
+  <!-- STAGE -->
+  <div class="stage">
+    <div class="canvas" id="canvas">
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 1 — TITLE
+══════════════════════════════════════════════ -->
+<div class="slide s1-bg active" id="s1">
+  <div class="strip s-indigo"></div>
+  <div class="s1-body">
+    <div class="s1-left">
+      <div class="s1-eyebrow">🚀 Full Stack + DevOps Project</div>
+      <div class="s1-title">Career<span>Nest</span></div>
+      <p class="s1-desc">
+        A complete online job and internship finding platform built for students and recruiters — powered by the MERN stack and a professional DevOps pipeline with Docker, Jenkins, Prometheus and Grafana.
+      </p>
+      <div class="s1-chips">
+        <div class="s1-chip">⚛️ React + Vite</div>
+        <div class="s1-chip">🟩 Node.js + Express</div>
+        <div class="s1-chip">🍃 MongoDB</div>
+        <div class="s1-chip">🐳 Docker</div>
+        <div class="s1-chip">🔧 Jenkins</div>
+        <div class="s1-chip">📊 Grafana</div>
+      </div>
+      <div class="s1-author">
+        <div class="av">OK</div>
+        <div>
+          <div class="an">Omprakash Kewatiya</div>
+          <div class="ar">Full Stack &amp; DevOps Engineer</div>
+        </div>
+      </div>
+    </div>
+    <div class="s1-right">
+      <div class="logo-box">🐦</div>
+      <div class="s1-stats">
+        <div class="s1-stat"><div class="v">500+</div><div class="l">Live Jobs</div></div>
+        <div class="s1-stat"><div class="v">5</div><div class="l">Services</div></div>
+        <div class="s1-stat"><div class="v">6</div><div class="l">CI Stages</div></div>
+        <div class="s1-stat"><div class="v">MERN</div><div class="l">Stack</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 2 — PROJECT OVERVIEW
+══════════════════════════════════════════════ -->
+<div class="slide" id="s2">
+  <div class="strip s-blue"></div>
+  <div class="shead">
+    <div class="shead-icon ic-blue">📋</div>
+    <div class="shead-text">
+      <h2>Project Overview — What is CareerNest?</h2>
+      <p>An end-to-end platform connecting students with job opportunities</p>
+    </div>
+    <span class="shead-badge">02 / 11</span>
+  </div>
+  <div class="sbody">
+    <div class="tcol" style="gap:14px">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="icard bt-indigo">
+          <div class="ci">🎓</div>
+          <h3>For Students</h3>
+          <p>Students can register, build a detailed profile, upload their resume and apply to jobs and internships from hundreds of companies — all from one platform. They get real-time application tracking and email alerts.</p>
+        </div>
+        <div class="icard bt-blue">
+          <div class="ci">🏢</div>
+          <h3>For Recruiters</h3>
+          <p>Recruiters can post job listings with full details, manage and shortlist applicants, update application statuses and view candidate profiles including resume downloads — all in a dedicated dashboard.</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="icard bt-green">
+          <div class="ci">🔍</div>
+          <h3>Smart Job Search</h3>
+          <p>Powerful search with filters for keywords, city/location, experience level (Fresher to Expert), and job type (Full-Time, Part-Time, Internship, Remote). Quick search chips on the home page make searching instant.</p>
+        </div>
+        <div class="icard bt-amber">
+          <div class="ci">🔐</div>
+          <h3>Secure Authentication</h3>
+          <p>Industry-standard JWT-based login with role-based access for Students and Recruiters. Forgot password uses a 6-digit OTP sent via Gmail SMTP with a 10-minute expiry — fully secure and verified.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 3 — TECHNOLOGY STACK
+══════════════════════════════════════════════ -->
+<div class="slide" id="s3">
+  <div class="strip s-purple"></div>
+  <div class="shead">
+    <div class="shead-icon ic-purple">⚙️</div>
+    <div class="shead-text">
+      <h2>Technology Stack</h2>
+      <p>Every tool and library used to build CareerNest</p>
+    </div>
+    <span class="shead-badge">03 / 11</span>
+  </div>
+  <div class="sbody">
+    <div class="tcol">
+      <div>
+        <p style="font-size:11px;font-weight:800;color:#4f46e5;letter-spacing:.8px;text-transform:uppercase;margin-bottom:9px">🖥️ Frontend Technologies</p>
+        <ul class="blist">
+          <li><div class="bull bull-indigo">⚛️</div><span><strong>React 19 + Vite 7</strong> — Fast, modern frontend UI library with instant hot-reload development server</span></li>
+          <li><div class="bull bull-blue">🎨</div><span><strong>TailwindCSS v3</strong> — Utility-first CSS framework for building responsive, beautiful designs quickly</span></li>
+          <li><div class="bull bull-purple">✨</div><span><strong>Framer Motion</strong> — Production-ready animation library for smooth page transitions and micro-interactions</span></li>
+          <li><div class="bull bull-indigo">🔁</div><span><strong>React Router DOM v7</strong> — Client-side routing for seamless navigation between all pages</span></li>
+          <li><div class="bull bull-blue">📡</div><span><strong>Axios</strong> — HTTP client for making REST API calls to the backend with interceptors</span></li>
+          <li><div class="bull bull-teal">🌐</div><span><strong>Nginx</strong> — High-performance web server that serves the production React build inside Docker</span></li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:11px;font-weight:800;color:#059669;letter-spacing:.8px;text-transform:uppercase;margin-bottom:9px">🛠️ Backend &amp; DevOps Technologies</p>
+        <ul class="blist">
+          <li><div class="bull bull-green">🟩</div><span><strong>Node.js 20 + Express 5</strong> — Server-side runtime and web framework for the REST API</span></li>
+          <li><div class="bull bull-green">🍃</div><span><strong>MongoDB + Mongoose</strong> — NoSQL database with elegant ODM for data modeling and queries</span></li>
+          <li><div class="bull bull-amber">🔑</div><span><strong>JWT + Bcryptjs</strong> — Secure token-based authentication with password hashing</span></li>
+          <li><div class="bull bull-blue">🐳</div><span><strong>Docker + Docker Compose</strong> — Containerization and multi-service orchestration</span></li>
+          <li><div class="bull bull-red">🔧</div><span><strong>Jenkins CI/CD</strong> — Automated pipeline for lint, build and validation on every push</span></li>
+          <li><div class="bull bull-amber">📊</div><span><strong>Prometheus + Grafana</strong> — Real-time metrics collection and visual dashboard monitoring</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 4 — SYSTEM ARCHITECTURE
+══════════════════════════════════════════════ -->
+<div class="slide" id="s4">
+  <div class="strip s-indigo"></div>
+  <div class="shead">
+    <div class="shead-icon ic-indigo">🏗️</div>
+    <div class="shead-text">
+      <h2>System Architecture</h2>
+      <p>How all components connect and communicate with each other</p>
+    </div>
+    <span class="shead-badge">04 / 11</span>
+  </div>
+  <div class="sbody" style="padding-top:10px;padding-bottom:10px">
+    <div class="flow" style="flex:1;justify-content:center">
+      <div class="frow">
+        <div class="fbox fi" style="padding:9px 32px;font-size:clamp(9.5px,1.2vw,12px)">👤 Student / Recruiter<small>Opens the app in any browser</small></div>
+      </div>
+      <div class="fdn">↓<small>HTTP Request</small></div>
+      <div class="frow">
+        <div class="fbox fc" style="min-width:170px">🌐 React Frontend<small>Vite + TailwindCSS</small><small>Served by Nginx — Port 3000</small></div>
+      </div>
+      <div class="fdn">↓<small>Axios REST API calls</small></div>
+      <div class="frow" style="gap:12px">
+        <div class="fbox fi" style="min-width:145px">⚙️ Express Backend<small>Node.js + Express 5</small><small>REST API — Port 5005</small></div>
+        <div class="farr">→</div>
+        <div class="fbox fg" style="min-width:130px">🍃 MongoDB Database<small>Mongoose ODM</small><small>Port 27017</small></div>
+        <div class="farr">→</div>
+        <div class="fbox fa" style="min-width:115px">📤 File Storage<small>Multer — Resume Files</small><small>Uploaded by Students</small></div>
+      </div>
+      <div class="fdn">↓<small>Backend exposes /metrics endpoint</small></div>
+      <div class="frow" style="gap:12px">
+        <div class="fbox fr" style="min-width:145px">📡 Prometheus<small>Collects backend metrics</small><small>Every 5 seconds — Port 9090</small></div>
+        <div class="farr">→</div>
+        <div class="fbox fa" style="min-width:145px">📊 Grafana Dashboard<small>Visualizes all metrics</small><small>Charts &amp; Alerts — Port 4000</small></div>
+        <div class="farr">→</div>
+        <div class="fbox fp" style="min-width:110px">👁️ DevOps Team<small>Monitors &amp; Responds</small></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 5 — WHY DEVOPS
+══════════════════════════════════════════════ -->
+<div class="slide" id="s5">
+  <div class="strip s-amber"></div>
+  <div class="shead">
+    <div class="shead-icon ic-amber">💡</div>
+    <div class="shead-text">
+      <h2>Why DevOps is Needed for CareerNest?</h2>
+      <p>The key reasons DevOps practices make this project better</p>
+    </div>
+    <span class="shead-badge">05 / 11</span>
+  </div>
+  <div class="sbody">
+    <div style="display:flex;flex-direction:column;gap:10px;flex:1">
+      <div class="icard" style="border-left:4px solid #4f46e5;border-radius:0 10px 10px 0;background:#f8faff">
+        <h3>🐳 Problem — "It works on my machine" but not on others</h3>
+        <p style="margin-top:4px">Without Docker, the app might work perfectly on one developer's computer but crash on another due to different Node.js versions, missing packages or wrong MongoDB setup. Docker solves this by packaging the entire application — code, dependencies, and environment — into containers that run exactly the same everywhere. This removes all environment-related bugs.</p>
+      </div>
+      <div class="icard" style="border-left:4px solid #dc2626;border-radius:0 10px 10px 0;background:#fff8f8">
+        <h3>🔧 Problem — Manual testing before every deployment is slow and error-prone</h3>
+        <p style="margin-top:4px">Developers would need to manually run lint checks, test the build and verify Docker configs every single time before deploying. Jenkins CI/CD automates all of this — it automatically validates the code quality, runs the build process and checks Docker configuration the moment new code is pushed to GitHub.</p>
+      </div>
+      <div class="icard" style="border-left:4px solid #f59e0b;border-radius:0 10px 10px 0;background:#fffdf0">
+        <h3>📊 Problem — No visibility into how the app is performing in real-time</h3>
+        <p style="margin-top:4px">Without monitoring, we would never know if API responses are becoming slow, if error rates are increasing, or if the server is running out of memory — until users start complaining. Prometheus and Grafana give us live graphs of every API call, response time, CPU usage and error rate, allowing us to detect and fix issues before users even notice them.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 6 — DOCKER
+══════════════════════════════════════════════ -->
+<div class="slide" id="s6">
+  <div class="strip s-teal"></div>
+  <div class="shead">
+    <div class="shead-icon ic-teal">🐳</div>
+    <div class="shead-text">
+      <h2>Docker &amp; Docker Compose</h2>
+      <p>How containerization works in this project</p>
+    </div>
+    <span class="shead-badge">06 / 11</span>
+  </div>
+  <div class="sbody">
+    <div class="tcol">
+      <div style="display:flex;flex-direction:column;gap:11px">
+        <div class="icard bt-teal">
+          <div class="ci">🐳</div>
+          <h3>What is Docker doing here?</h3>
+          <p>Docker wraps the Node.js backend and the React frontend into separate containers. The frontend uses a multi-stage Dockerfile — first it builds the React app with Vite, then puts the final files inside an Nginx server container. This means the production image is tiny and fast. The backend container holds all the Express API code and its dependencies.</p>
+        </div>
+        <div class="icard bt-indigo">
+          <div class="ci">🔗</div>
+          <h3>What does Docker Compose do?</h3>
+          <p>Docker Compose is like a master controller for all 5 services. It starts MongoDB first, waits for it to be healthy, then starts the Backend, then the Frontend. Prometheus and Grafana also start automatically. All services talk to each other using service names on a shared private network called <strong>careernest-network</strong>.</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <p style="font-size:11px;font-weight:800;color:#0d9488;letter-spacing:.8px;text-transform:uppercase">📦 All 5 Services Managed</p>
+        <ul class="blist">
+          <li><div class="bull bull-teal">🍃</div><span><strong>MongoDB</strong> — Database service on Port 27017 with health check ping</span></li>
+          <li><div class="bull bull-green">⚙️</div><span><strong>Backend API</strong> — Node.js server on Port 5005, starts after MongoDB is healthy</span></li>
+          <li><div class="bull bull-blue">🌐</div><span><strong>Frontend</strong> — React app served by Nginx on Port 3000</span></li>
+          <li><div class="bull bull-red">📡</div><span><strong>Prometheus</strong> — Metrics collector on Port 9090, scrapes backend every 5 seconds</span></li>
+          <li><div class="bull bull-amber">📊</div><span><strong>Grafana</strong> — Dashboard UI on Port 4000, auto-connected to Prometheus datasource</span></li>
+        </ul>
+        <div class="stat-row" style="margin-top:6px">
+          <div class="sbox"><div class="sv sv-teal">5</div><div class="sl">Services</div></div>
+          <div class="sbox"><div class="sv sv-indigo">1 cmd</div><div class="sl">Start All</div></div>
+          <div class="sbox"><div class="sv sv-green">3</div><div class="sl">Volumes</div></div>
+          <div class="sbox"><div class="sv sv-amber">✓</div><div class="sl">Health Checks</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 7 — JENKINS CI/CD
+══════════════════════════════════════════════ -->
+<div class="slide" id="s7">
+  <div class="strip s-red"></div>
+  <div class="shead">
+    <div class="shead-icon ic-red">🔧</div>
+    <div class="shead-text">
+      <h2>Jenkins CI/CD Pipeline</h2>
+      <p>Automated 6-stage build, test and validation pipeline</p>
+    </div>
+    <span class="shead-badge">07 / 11</span>
+  </div>
+  <div class="sbody">
+    <div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:9px;padding:9px 16px;margin-bottom:10px;font-size:clamp(10px,1.2vw,12px);color:#92400e;font-weight:600;">
+      🔧 Jenkins runs inside a custom Docker container that includes Node.js 20, Docker CLI, and Docker Compose pre-installed — so it can build the project and validate Docker configs directly.
+    </div>
+    <div style="margin-bottom:10px">
+      <div class="pipe-row">
+        <div class="pstep bt-red"><div class="pn">1</div><div class="pi">🧹</div><h4>Clean Workspace</h4><p>Deletes all files from the previous pipeline run to start fresh and avoid any leftover artifacts</p></div>
+        <div class="p-arr">→</div>
+        <div class="pstep bt-amber"><div class="pn">2</div><div class="pi">📥</div><h4>Checkout Code</h4><p>Downloads the latest version of the source code from the GitHub repository using Git SCM</p></div>
+        <div class="p-arr">→</div>
+        <div class="pstep bt-blue"><div class="pn">3</div><div class="pi">📦</div><h4>Install Dependencies</h4><p>Runs npm install for both the frontend and backend to get all required packages</p></div>
+        <div class="p-arr">→</div>
+        <div class="pstep bt-purple"><div class="pn">4</div><div class="pi">🔍</div><h4>Frontend Lint</h4><p>Runs ESLint on all React components to catch code quality issues and enforce best practices</p></div>
+        <div class="p-arr">→</div>
+        <div class="pstep bt-green"><div class="pn">5</div><div class="pi">✅</div><h4>Syntax Check</h4><p>Validates the Node.js backend code using node --check to catch syntax errors before deployment</p></div>
+        <div class="p-arr">→</div>
+        <div class="pstep bt-indigo"><div class="pn">6</div><div class="pi">🏗️</div><h4>Build + Validate</h4><p>Runs Vite production build and validates the Docker Compose configuration is correct</p></div>
+      </div>
+    </div>
+    <div class="stat-row">
+      <div class="sbox"><div class="sv sv-red">6</div><div class="sl">Pipeline Stages</div></div>
+      <div class="sbox"><div class="sv sv-amber">1 hr</div><div class="sl">Build Timeout</div></div>
+      <div class="sbox"><div class="sv sv-indigo">10</div><div class="sl">Builds Kept</div></div>
+      <div class="sbox"><div class="sv sv-green">:8080</div><div class="sl">Jenkins Port</div></div>
+      <div class="sbox"><div class="sv sv-purple">✓</div><div class="sl">No Concurrent Builds</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 8 — PROMETHEUS + GRAFANA
+══════════════════════════════════════════════ -->
+<div class="slide" id="s8">
+  <div class="strip s-amber"></div>
+  <div class="shead">
+    <div class="shead-icon ic-amber">📊</div>
+    <div class="shead-text">
+      <h2>Prometheus + Grafana Monitoring</h2>
+      <p>Real-time observability and visual dashboards</p>
+    </div>
+    <span class="shead-badge">08 / 11</span>
+  </div>
+  <div class="sbody">
+    <div class="tcol">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="icard bt-red">
+          <div class="ci">📡</div>
+          <h3>Prometheus — The Metrics Collector</h3>
+          <p>Prometheus is a time-series database that automatically calls the backend's <strong>/metrics</strong> endpoint every 5 seconds and stores the data. The backend uses the <strong>prom-client</strong> library to track every single HTTP request — recording which route was called, the HTTP method used, the response status code, and most importantly, <strong>how long it took to respond</strong>. This data is stored in histogram buckets ranging from 0.1 seconds all the way to 5 seconds.</p>
+        </div>
+        <div class="stat-row">
+          <div class="sbox"><div class="sv sv-red">5s</div><div class="sl">Scrape Interval</div></div>
+          <div class="sbox"><div class="sv sv-amber">:9090</div><div class="sl">Prometheus Port</div></div>
+          <div class="sbox"><div class="sv sv-green">:4000</div><div class="sl">Grafana Port</div></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="icard bt-amber">
+          <div class="ci">📊</div>
+          <h3>Grafana — The Visual Dashboard</h3>
+          <p>Grafana connects to Prometheus as its data source and turns all the raw numbers into beautiful, real-time charts. The <strong>careernest_dashboard.json</strong> file is automatically loaded when Grafana starts — so the dashboard is ready immediately without any manual setup. You can see live graphs for API request rate, average response time, error rate per endpoint, and system resource usage. This makes it easy to spot problems instantly.</p>
+        </div>
+        <ul class="blist">
+          <li><div class="bull bull-amber">✓</div><span>Datasource auto-provisioned from <strong>datasource.yml</strong> config file</span></li>
+          <li><div class="bull bull-amber">✓</div><span>Dashboard auto-loaded from <strong>careernest_dashboard.json</strong> on startup</span></li>
+          <li><div class="bull bull-amber">✓</div><span>Tracks HTTP latency, request rate, error count and CPU usage</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 9 — DEVOPS WORKFLOW
+══════════════════════════════════════════════ -->
+<div class="slide" id="s9">
+  <div class="strip s-indigo"></div>
+  <div class="shead">
+    <div class="shead-icon ic-indigo">🔄</div>
+    <div class="shead-text">
+      <h2>Complete DevOps Workflow</h2>
+      <p>End-to-end journey from writing code to live monitoring</p>
+    </div>
+    <span class="shead-badge">09 / 11</span>
+  </div>
+  <div class="sbody" style="padding-top:8px;padding-bottom:10px">
+    <div class="flow" style="flex:1;justify-content:center;gap:5px">
+      <div class="frow">
+        <div class="fbox fi" style="font-size:clamp(9.5px,1.2vw,11.5px)">💻 Developer writes code locally<small>React frontend + Node.js backend</small></div>
+        <div class="farr">→</div>
+        <div class="fbox fc">📤 Git Push to GitHub<small>Code uploaded to repository</small></div>
+        <div class="farr">→</div>
+        <div class="fbox fr">🔧 Jenkins Pipeline Triggered<small>Automatic or manual run</small></div>
+      </div>
+      <div class="fdn">↓<small>Jenkins runs all 6 stages automatically</small></div>
+      <div class="frow">
+        <div class="fbox">🧹 Clean</div>
+        <div class="farr">→</div>
+        <div class="fbox">📥 Checkout</div>
+        <div class="farr">→</div>
+        <div class="fbox">📦 Install</div>
+        <div class="farr">→</div>
+        <div class="fbox">🔍 Lint</div>
+        <div class="farr">→</div>
+        <div class="fbox">✅ Syntax</div>
+        <div class="farr">→</div>
+        <div class="fbox fg">🏗️ Build ✓ Passed</div>
+      </div>
+      <div class="fdn">↓<small>Pipeline passes — deployment begins</small></div>
+      <div class="frow">
+        <div class="fbox fc">🐳 docker-compose up --build<small>All containers start in correct order</small></div>
+        <div class="farr">→</div>
+        <div class="fbox fg">🍃 MongoDB ready<small>Port 27017</small></div>
+        <div class="farr">+</div>
+        <div class="fbox fi">⚙️ Backend API live<small>Port 5005</small></div>
+        <div class="farr">+</div>
+        <div class="fbox fc">🌐 Frontend live<small>Port 3000</small></div>
+      </div>
+      <div class="fdn">↓<small>Monitoring layer activates automatically</small></div>
+      <div class="frow">
+        <div class="fbox fr">📡 Prometheus scraping<small>Every 5 seconds non-stop</small></div>
+        <div class="farr">→</div>
+        <div class="fbox fa">📊 Grafana showing dashboards<small>Live charts and graphs</small></div>
+        <div class="farr">→</div>
+        <div class="fbox fp">👁️ DevOps Team monitors<small>Detects and fixes issues fast</small></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 10 — KEY FEATURES
+══════════════════════════════════════════════ -->
+<div class="slide" id="s10">
+  <div class="strip s-green"></div>
+  <div class="shead">
+    <div class="shead-icon ic-green">🌟</div>
+    <div class="shead-text">
+      <h2>Key Features of CareerNest</h2>
+      <p>Complete list of functionalities built into the platform</p>
+    </div>
+    <span class="shead-badge">10 / 11</span>
+  </div>
+  <div class="sbody">
+    <div class="tcol">
+      <ul class="blist">
+        <li><div class="bull bull-indigo">🔐</div><span><strong>JWT Authentication + OTP Verification</strong> — Secure signup and login with email OTP for password reset, powered by Nodemailer and Gmail SMTP</span></li>
+        <li><div class="bull bull-blue">👤</div><span><strong>Student Profile Builder</strong> — Students can add skills, education history, work experience, certifications and upload their resume as PDF</span></li>
+        <li><div class="bull bull-amber">💼</div><span><strong>Job &amp; Internship Listings</strong> — 500+ live opportunities with filters for keyword, location, experience level and job type</span></li>
+        <li><div class="bull bull-green">📋</div><span><strong>One-Click Apply &amp; Track</strong> — Apply to jobs instantly and track application status from the student dashboard in real time</span></li>
+        <li><div class="bull bull-purple">🏢</div><span><strong>Full Recruiter Dashboard</strong> — Recruiters post jobs, view all applications, shortlist candidates and update statuses</span></li>
+      </ul>
+      <ul class="blist">
+        <li><div class="bull bull-red">📊</div><span><strong>Live Prometheus + Grafana Monitoring</strong> — Real-time API performance tracking with visual dashboards showing latency and error rates</span></li>
+        <li><div class="bull bull-teal">🐳</div><span><strong>Fully Dockerized — 5 Services</strong> — MongoDB, Backend, Frontend, Prometheus and Grafana all run in Docker containers with one command</span></li>
+        <li><div class="bull bull-indigo">🔧</div><span><strong>Jenkins CI/CD Automation</strong> — 6-stage automated pipeline runs lint, syntax check, production build and Docker validation on every push</span></li>
+        <li><div class="bull bull-amber">📧</div><span><strong>Email Notification System</strong> — Automated emails for OTP delivery, application updates and account verification via Nodemailer</span></li>
+        <li><div class="bull bull-green">📤</div><span><strong>Resume File Upload</strong> — Students upload PDF resumes securely stored on the server and accessible to recruiters directly</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 11 — THANK YOU
+══════════════════════════════════════════════ -->
+<div class="slide s11-bg" id="s11">
+  <div class="strip s-indigo"></div>
+  <div class="s11-body">
+    <div class="s11-logo">🐦</div>
+    <div class="s11-title">Thank You! <span>🙏</span></div>
+    <p class="s11-sub">CareerNest — A Complete Full Stack + DevOps Project by Omprakash Kewatiya</p>
+    <div class="s11-grid">
+      <div class="s11-card"><div class="ei">🐳</div><h4>Docker + Compose</h4><p>5 services fully containerized and orchestrated with one command</p></div>
+      <div class="s11-card"><div class="ei">🔧</div><h4>Jenkins CI/CD</h4><p>6-stage automated pipeline for lint, build and Docker validation</p></div>
+      <div class="s11-card"><div class="ei">📊</div><h4>Prometheus + Grafana</h4><p>Real-time metric scraping and live visual dashboards</p></div>
+    </div>
+    <div class="s11-stats">
+      <div class="s11-stat"><div class="sv">5+</div><div class="sl">Docker Services</div></div>
+      <div class="s11-stat"><div class="sv">6</div><div class="sl">CI/CD Stages</div></div>
+      <div class="s11-stat"><div class="sv">5s</div><div class="sl">Metric Scrape</div></div>
+      <div class="s11-stat"><div class="sv">MERN</div><div class="sl">Stack</div></div>
+      <div class="s11-stat"><div class="sv">500+</div><div class="sl">Live Jobs</div></div>
+    </div>
+    <div class="s11-ty">Built with ❤️ by <strong style="color:#4f46e5">Omprakash Kewatiya</strong></div>
+    <div class="s11-name" style="margin-top:4px">Full Stack Developer &amp; DevOps Engineer</div>
+  </div>
+</div>
+
+    </div><!-- canvas -->
+  </div><!-- stage -->
+
+</div><!-- layout -->
+
+<!-- BOTTOM NAV -->
+<div class="bottombar">
+  <button class="nb" id="btnP" onclick="go(-1)" disabled>◀</button>
+  <div class="prog"><div class="prog-fill" id="pf" style="width:9.09%"></div></div>
+  <button class="nb" id="btnN" onclick="go(1)">▶</button>
+  <span class="key-hint" style="margin-left:6px">Use ← → keys to navigate</span>
+</div>
+
+<script>
+const TOTAL = 11;
+let cur = 1;
+
+const SLIDES = [
+  {title:'Title Slide',      color:'#4f46e5'},
+  {title:'Project Overview', color:'#3b82f6'},
+  {title:'Tech Stack',       color:'#8b5cf6'},
+  {title:'Architecture',     color:'#4f46e5'},
+  {title:'Why DevOps?',      color:'#f59e0b'},
+  {title:'Docker & Compose', color:'#0d9488'},
+  {title:'Jenkins CI/CD',    color:'#ef4444'},
+  {title:'Monitoring',       color:'#f59e0b'},
+  {title:'DevOps Workflow',  color:'#4f46e5'},
+  {title:'Key Features',     color:'#10b981'},
+  {title:'Thank You',        color:'#4f46e5'},
+];
+
+// Build panel
+const panel = document.getElementById('panel');
+SLIDES.forEach((s,i)=>{
+  const d = document.createElement('div');
+  d.className = 'thumb' + (i===0?' active':'');
+  d.onclick = ()=>goTo(i+1);
+  d.innerHTML = `<div class="thumb-inner">
+    <div class="thumb-bar" style="background:${s.color}"></div>
+    <div class="thumb-ttl">${s.title}</div>
+    <div class="thumb-line"></div>
+    <div class="thumb-line s"></div>
+    <div class="thumb-line xs"></div>
+  </div><span class="thumb-n">${i+1}</span>`;
+  panel.appendChild(d);
+});
+
+function goTo(n){
+  if(n<1||n>TOTAL||n===cur) return;
+  document.getElementById('s'+cur).classList.remove('active');
+  document.querySelectorAll('.thumb')[cur-1].classList.remove('active');
+  cur = n;
+  document.getElementById('s'+cur).classList.add('active');
+  const thumbs = document.querySelectorAll('.thumb');
+  thumbs[cur-1].classList.add('active');
+  thumbs[cur-1].scrollIntoView({behavior:'smooth',block:'nearest'});
+  document.getElementById('pf').style.width = (cur/TOTAL*100)+'%';
+  document.getElementById('top-count').textContent = 'Slide '+cur+' of '+TOTAL;
+  document.getElementById('btnP').disabled = cur===1;
+  document.getElementById('btnN').disabled = cur===TOTAL;
+}
+function go(d){ goTo(cur+d); }
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();go(1);}
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();go(-1);}
+});
+
+function toggleFullscreen(){
+  if(!document.fullscreenElement) document.documentElement.requestFullscreen();
+  else document.exitFullscreen();
+}
+</script>
+</body>
+</html>
